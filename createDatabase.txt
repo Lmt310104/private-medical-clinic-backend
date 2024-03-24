@@ -1,9 +1,5 @@
 
-
-
-
-
-npx sequelize-cli model:generate --name users --attributes userName:string,fullName:string,email:string,password:string,userGroupId:integer
+npx sequelize-cli model:generate --name users --attributes userName:string,fullName:string,email:string,password:string,userGroupId:integer,refreshToken:string
 npx sequelize-cli model:generate --name userGroup --attributes groupName:string
 npx sequelize-cli model:generate --name arguments --attributes maxNumberOfPatients:bigint,feeConsult:bigint 
 npx sequelize-cli model:generate --name bills --attributes patientId:integer,appointmentListId:integer,drugExpense:bigint
