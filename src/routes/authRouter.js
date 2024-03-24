@@ -1,7 +1,7 @@
 const router = require("express").Router();
 import authController from "../controllers/authController";
 
-router.route("/login").post(authController.Login);
+router.route("/login").post(authController.login);
 router
   .route("/success")
   .get(authController.isLoggedIn, authController.isSuccessLogin);

@@ -1,4 +1,5 @@
 const passport = require("passport");
+const GoogleStategy = require("passport-google-oauth2");
 const LocalStatregy = require("passport-local").Strategy;
 const asyncHandler = require("express-async-handler");
 import { generateAccessToken } from "./jwt";
@@ -8,11 +9,11 @@ require("dotenv").config();
 
 const auth = new passport.Passport();
 
+// auth.use(new GoogleStategy({}));
 auth.use(
   "local",
   new LocalStatregy(
     asyncHandler(async (username, password, done) => {
-      console.log(username + password);
       try {
         const user = await db.users.findOne({ where: { userName: username } });
         const role = await db.userGroup.findOne({

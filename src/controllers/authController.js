@@ -2,7 +2,8 @@ const db = require("../models/index");
 const auth = require("../middleware/passport");
 import asyncHandler from "express-async-handler";
 // Routes
-const Login = async (req, res, next) => {
+
+const login = async (req, res, next) => {
   await auth.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
@@ -65,8 +66,9 @@ const Logout = (req, res, next) => {
     res.status(401).json({ message: "You are not authenticated" });
   }
 };
+const changePassword = async (req, res, next) => {};
 export default {
-  Login,
+  login,
   isLoggedIn,
   isSuccessLogin,
   isAuthenticatedCallBack,
