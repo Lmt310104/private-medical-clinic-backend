@@ -70,7 +70,58 @@ const getDrug = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 });
-const updateDrug = asyncHandler(async (req, res) => {});
-const deleteDrug = asyncHandler(async (req, res) => {});
+const updateDrug = asyncHandler(async (req, res) => {
+  try {
+    if (req.isAuthenticated()) {
+      try {
+        const id = req.params.id;
+        const drug = req.body;
+        const existingDrug = await db.drugs.findOne({ where: { id: id } });
+        if (!existingDrug) {
+          return res.status(404).json({ message: "Drug not found" });
+        }
+        await db.drugs.update(
+          {
+            drugName: drug.drugName,
+            price: drug.price,
+            count: drug.count,
+            unitId: drug.unitId,
+          },
+          { where: { id: id } }
+        );
+        res
+          .status(200)
+          .json({ message: "Drug updated successfully", durg: drug });
+      } catch (err) {
+        res.status(500).json({ message: "server error" });
+      }
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "server error" });
+  }
+});
+const deleteDrug = asyncHandler(async (req, res) => {
+  try {
+    if (req.isAuthenticated()) {
+      try {
+        const id = req.params.id;
+        const drug = await db.drugs.findOne({ where: { id: id } });
+        if (!drug) {
+          return res.status(404).json({ message: "Drug not found" });
+        }
+        await db.drugs.destroy({ where: { id: id } });
+        res.status(200).json({ message: "Drug deleted successfully" });
+      } catch (err) {
+        res.status(500).json({ message: "server error" });
+      }
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "server error" });
+  }
+});
 
-export default { getAllDrugs, addDrug, getDrug };
+export default { getAllDrugs, addDrug, getDrug, updateDrug, deleteDrug };
