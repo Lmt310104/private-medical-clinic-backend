@@ -1,15 +1,68 @@
 const passport = require("passport");
-const GoogleStategy = require("passport-google-oauth2");
+const GoogleStategy = require("passport-google-oidc");
 const LocalStatregy = require("passport-local").Strategy;
 const asyncHandler = require("express-async-handler");
 import { generateAccessToken } from "./jwt";
 const db = require("../models/index");
-import jwt from "jsonwebtoken";
+import jwt, { verify } from "jsonwebtoken";
 require("dotenv").config();
 
 const auth = new passport.Passport();
 
-// auth.use(new GoogleStategy({}));
+// sign in with google
+auth.use(
+  new GoogleStategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_REDIRECT_URL,
+      passReqToCallback: true,
+      scope: ["email", "profile"],
+    },
+    async (accessToken, refreshToken, profile, cb) => {
+      console.log(profile);
+      console.log(profile.emails[0].value);
+      try {
+        const user = await db.users.findOne({
+          include: [{ model: db.userGroup, as: "userGroup" }],
+          where: { email: profile.emails[0].value },
+        });
+        console.log(user);
+        if (user) {
+          const userData = {
+            username: user.dataValues.userName,
+            email: user.dataValues.email,
+            fullName: user.dataValues.fullName,
+            id: user.dataValues.id,
+            role: user.dataValues.userGroup.dataValues.groupName,
+          };
+          const accessToken = generateAccessToken(userData);
+          const refreshToken = jwt.sign(
+            userData,
+            process.env.REFRESH_KEY_SECRET
+          );
+          await db.users.update(
+            { refreshToken: refreshToken },
+            { where: { id: user.dataValues.id } }
+          );
+          const userResponse = {
+            user: userData,
+            refreshToken: refreshToken,
+            accessToken: accessToken,
+          };
+          cb(null, userResponse);
+        } else {
+          cb(null, false, {
+            message:
+              "User not found, are you sure you have an account with this email?",
+          });
+        }
+      } catch (err) {
+        cb(null, false, { message: "Something went wrong" });
+      }
+    }
+  )
+);
 auth.use(
   "local",
   new LocalStatregy(
