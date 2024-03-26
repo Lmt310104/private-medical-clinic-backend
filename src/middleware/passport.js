@@ -24,20 +24,17 @@ auth.use(
       console.log(profile.emails[0].value);
       try {
         const user = await db.users.findOne({
+          include: [{ model: db.userGroup, as: "userGroup" }],
           where: { email: profile.emails[0].value },
         });
-        const role = await db.userGroup.findOne({
-          where: { id: user.dataValues.userGroupId },
-        });
         console.log(user);
-        console.log(role);
         if (user) {
           const userData = {
             username: user.dataValues.userName,
             email: user.dataValues.email,
             fullName: user.dataValues.fullName,
             id: user.dataValues.id,
-            role: role.dataValues.groupName,
+            role: user.dataValues.userGroup.dataValues.groupName,
           };
           const accessToken = generateAccessToken(userData);
           const refreshToken = jwt.sign(
