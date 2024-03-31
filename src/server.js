@@ -37,7 +37,7 @@ app.use("/api/v1/arguments", require("./routes/argumentRouter"));
 app.use("/api/v1/units", require("./routes/unitRouter"));
 app.use("/api/v1/diseases", require("./routes/diseaseRouter"));
 app.use("/api/v1/usage", require("./routes/usageRouter"));
-// app.use("/api/v1/users", require("./routes/userRouter"));
+app.use("/api/v1/users", require("./routes/userRouter"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
