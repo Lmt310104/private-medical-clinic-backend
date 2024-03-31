@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 import { generateAccessToken } from "./jwt";
 const db = require("../models/index");
 import jwt, { verify } from "jsonwebtoken";
+import bcrypt from "bcrypt";
 require("dotenv").config();
 
 const auth = new passport.Passport();
@@ -72,7 +73,7 @@ auth.use(
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },
         });
-        if (user && user.dataValues.password === password) {
+        if (user && bcrypt.compare(user.dataValues.password, password)) {
           const userData = {
             username: user.dataValues.userName,
             email: user.dataValues.email,

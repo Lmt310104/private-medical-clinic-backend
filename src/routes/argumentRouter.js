@@ -1,20 +1,16 @@
 const router = require("express").Router();
 import { authenticateAccessToken } from "../middleware/jwt";
-
+import argumentController from "../controllers/argumentController";
 //maxnumofpatients
 router
   .route("/maxnumofpatients")
-  .post(authenticateAccessToken, authController.login)
-  .put(authenticateAccessToken, authController.login)
-  .delete(authenticateAccessToken, authController.login)
-  .get(authenticateAccessToken, authController.login);
+  .get(authenticateAccessToken, argumentController.getMaxNumOfPatients)
+  .put(authenticateAccessToken, argumentController.updateMaxNumOfPatients);
 
-//feeConsult
+// feeConsult
 router
   .route("/feeConsult")
-  .post(authenticateAccessToken, authController.login)
-  .put(authenticateAccessToken, authController.login)
-  .delete(authenticateAccessToken, authController.login)
-  .get(authenticateAccessToken, authController.login);
+  .get(authenticateAccessToken, argumentController.getFeeConsult)
+  .put(authenticateAccessToken, argumentController.updateFeeConsult);
 
 module.exports = router;

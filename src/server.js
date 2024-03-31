@@ -30,8 +30,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //routes
+
 app.use("/api/v1/auth", require("./routes/authRouter"));
 app.use("/api/v1/drugs", require("./routes/drugRouter"));
+app.use("/api/v1/arguments", require("./routes/argumentRouter"));
+app.use("/api/v1/units", require("./routes/unitRouter"));
+app.use("/api/v1/diseases", require("./routes/diseaseRouter"));
+app.use("/api/v1/usage", require("./routes/usageRouter"));
+app.use("/api/v1/users", require("./routes/userRouter"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
