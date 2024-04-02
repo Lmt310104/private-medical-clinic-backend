@@ -12,10 +12,19 @@ router
     authenticateAccessToken,
     appointmentRecordController.createAppointmentRecord
   );
-// router
-//   .route("/:id")
-//   .get(authenticateAccessToken, appointment.getAppointmentRecordById)
-//   .put(authenticateAccessToken, appointment.updateAppointmentRecordById)
-//   .delete(authenticateAccessToken, appointment.deleteAppointmentRecordById);
+router
+  .route("/:id")
+  .get(
+    authenticateAccessToken,
+    appointmentRecordController.getAppointmentRecordById
+  )
+  .put(
+    authenticateAccessToken,
+    appointmentRecordController.updateAppointmentRecordById
+  )
+  .delete(
+    authenticateAccessToken,
+    appointmentRecordController.deleteAppointmentRecordById
+  );
 
 module.exports = router;
