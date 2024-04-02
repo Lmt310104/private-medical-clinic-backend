@@ -7,6 +7,13 @@ const PORT = process.env.PORT || 8888;
 const session = require("express-session");
 const secretSessionKey = process.env.SECRET_SESSION_KEY;
 connection();
+
+app.get('/test', (req,res)=>{
+  res.json({
+    "hi":"hi"
+  })
+})
+
 app.use(
   session({
     secret: secretSessionKey,

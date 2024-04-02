@@ -24,6 +24,7 @@ const login = async (req, res, next) => {
     });
   })(req, res, next);
 };
+
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
