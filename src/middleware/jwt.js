@@ -30,6 +30,7 @@ export const authenticateAccessToken = async (req, res, next) => {
     const user = await db.users.findOne({
       where: { id: req.user.user.id, refreshToken: req.user.refreshToken },
     });
+    console.log(user);
     if (!user) {
       return res.status(403).json({ message: "Unauthorized" });
     }

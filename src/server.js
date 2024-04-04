@@ -50,6 +50,7 @@ app.use(
   "/api/v1/appointmentrecords",
   require("./routes/appointmentRecordRouter")
 );
+app.use("/api/v1/appointmentlists", require("./routes/appointmentListRouter"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -33,12 +33,14 @@ const isLoggedIn = (req, res, next) => {
 };
 const isAuthenticatedCallBack = () => {};
 const isSuccessLogin = asyncHandler(async (req, res) => {
-  console.log(req.user);
   if (req.isAuthenticated()) {
     const user = await db.users.findOne({ where: { id: req.user.user.id } });
     if (!user) {
       res.status(401).json({ message: "User not found" });
     }
+    console.log(user.refreshToken);
+    console.log(req.user.refreshToken);
+    console;
     if (user.refreshToken !== req.user.refreshToken) {
       req.logOut();
       req.session.destroy();
