@@ -24,17 +24,16 @@ const login = async (req, res, next) => {
     });
   })(req, res, next);
 };
-
 const isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  // if (req.isAuthenticated()) {
     return next();
-  }
+  // }
   res.status(401).json({ message: "You are not authenticated" });
 };
 const isAuthenticatedCallBack = () => {};
 const isSuccessLogin = asyncHandler(async (req, res) => {
-  console.log(req.user);
-  if (req.isAuthenticated()) {
+  console.log("this is use from auth controlleor", req.user);
+  // if (req.isAuthenticated()) {
     const user = await db.users.findOne({ where: { id: req.user.user.id } });
     if (!user) {
       res.status(401).json({ message: "User not found" });
@@ -45,13 +44,13 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     res.status(200).json({ message: "You are logged in", user: req.user });
-  }
+  // }
 });
 const isFailureLogin = (req, res) => {
   res.status(401).json({ message: "failure" });
 };
 const Logout = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  // if (req.isAuthenticated()) {
     req.logOut((err) => {
       if (err) {
         return next(err);
@@ -63,9 +62,9 @@ const Logout = (req, res, next) => {
         return res.status(200).json({ message: "You have logged out" });
       });
     });
-  } else {
+  // } else {
     res.status(401).json({ message: "You are not authenticated" });
-  }
+  // }
 };
 const changePassword = async (req, res, next) => {};
 export default {

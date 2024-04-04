@@ -3,9 +3,8 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 
 const getAllUser = asyncHandler(async (req, res, next) => {
-  console.log("this is authentication", req.isAuthenticated());
   try {
-    if (req.isAuthenticated()) {
+    // if (req.isAuthenticated()) {
       const users = await db.users.findAll({
         include: [
           {
@@ -28,13 +27,13 @@ const getAllUser = asyncHandler(async (req, res, next) => {
         message: "success",
         data: users,
       });
-    } else {
+    // } else {
       res.status(401).json({
         status: res.statusCode,
         message: "Unauthorized",
         data: "",
       });
-    }
+    // }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -45,7 +44,7 @@ const getAllUser = asyncHandler(async (req, res, next) => {
 });
 const createUser = asyncHandler(async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
+    // if (req.isAuthenticated()) {
       const { userName, email, password, fullName, userGroupId } = req.body;
       if (!userName || !email || !password || !fullName || !userGroupId) {
         return res.status(400).json({
@@ -86,7 +85,7 @@ const createUser = asyncHandler(async (req, res, next) => {
           data: user,
         });
       }
-    }
+    // }
   } catch {
     res.status(500).json({
       status: res.statusCode,
@@ -97,7 +96,7 @@ const createUser = asyncHandler(async (req, res, next) => {
 });
 const getUserById = asyncHandler(async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
+    // if (req.isAuthenticated()) {
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
@@ -106,13 +105,13 @@ const getUserById = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
-    } else {
+    // } else {
       res.status(401).json({
         status: res.statusCode,
         message: "Unauthorized",
         data: "",
       });
-    }
+    // }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -123,7 +122,7 @@ const getUserById = asyncHandler(async (req, res, next) => {
 });
 const updateUserById = asyncHandler(async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
+    // if (req.isAuthenticated()) {
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
@@ -132,13 +131,13 @@ const updateUserById = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
-    } else {
+    // } else {
       res.status(401).json({
         status: res.statusCode,
         message: "Unauthorized",
         data: "",
       });
-    }
+    // }
     const { userName, email, password, fullName, userGroupId } = req.body;
     const user = await db.users.update(
       {
@@ -173,7 +172,7 @@ const updateUserById = asyncHandler(async (req, res, next) => {
 });
 const deleteUserById = asyncHandler(async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
+    // if (req.isAuthenticated()) {
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
@@ -196,13 +195,13 @@ const deleteUserById = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
-    } else {
+    // } else {
       res.status(401).json({
         status: res.statusCode,
         message: "Unauthorized",
         data: "",
       });
-    }
+    // }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
