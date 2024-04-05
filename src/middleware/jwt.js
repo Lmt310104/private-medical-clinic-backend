@@ -6,13 +6,15 @@ export const generateAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_KEY_SECRET, { expiresIn: "15m" });
 };
 export const authenticateAccessToken = async (req, res, next) => {
+  console.log(req.isAuthenticated());
   if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized1" });
   }
   const authHeader = req.headers["authorization"];
+  console.log(authHeader);
 
   if (!authHeader) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized2" });
   }
   const token = authHeader.split(" ")[1];
   try {
@@ -25,14 +27,13 @@ export const authenticateAccessToken = async (req, res, next) => {
       !req.user.user ||
       !req.user.user.id
     ) {
-      return res.status(403).json({ message: "Unauthorized" });
+      return res.status(403).json({ message: "Unauthorized3" });
     }
     const user = await db.users.findOne({
       where: { id: req.user.user.id, refreshToken: req.user.refreshToken },
     });
-    console.log(user);
     if (!user) {
-      return res.status(403).json({ message: "Unauthorized" });
+      return res.status(403).json({ message: "Unauthorized4" });
     }
     try {
       jwt.verify(req.user.refreshToken, process.env.REFRESH_KEY_SECRET);
@@ -40,7 +41,7 @@ export const authenticateAccessToken = async (req, res, next) => {
       req.user.accessToken = accessToken;
       next();
     } catch (err) {
-      return res.status(403).json({ message: "Unauthorized" });
+      return res.status(403).json({ message: "Unauthorized5" });
     }
   }
 };
