@@ -55,6 +55,7 @@ const createAppointmentRecord = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
+
       const appointmentRecord = await db.appointmentRecords.create({
         patientId: patientId,
         symptoms: symptoms,

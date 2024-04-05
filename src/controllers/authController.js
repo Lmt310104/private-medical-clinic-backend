@@ -11,17 +11,17 @@ const login = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
-    req.logIn(user, async (err) => {
+    req.login(user, async (err) => {
       if (err) {
         return next(err);
       }
-      const user = req.user;
       res.status(200).json({
         status: res.statusCode,
         user: user,
         message: "You have successfully logged in",
       });
     });
+    console.log(req);
   })(req, res, next);
 };
 const isLoggedIn = (req, res, next) => {
@@ -68,7 +68,60 @@ const Logout = (req, res, next) => {
     res.status(401).json({ message: "You are not authenticated" });
   }
 };
-const changePassword = async (req, res, next) => {};
+const changePassword = asyncHandler(async (req, res, next) => {
+  try {
+    if (req.isAuthenticated()) {
+      const id = req.params.id;
+      if (!id) {
+        return res.status(400).json({
+          status: res.statusCode,
+          message: "id is required",
+          data: "",
+        });
+      }
+      const { password } = req.body;
+      if (!password) {
+        return res.status(400).json({
+          status: res.statusCode,
+          message: "password is required",
+          data: "",
+        });
+      }
+      const hashedPassword = await bcrypt.hashSync(password, 10);
+      const user = await db.users.update(
+        {
+          password: hashedPassword,
+        },
+        { where: { id: id } }
+      );
+      if (user) {
+        res.status(200).json({
+          status: res.statusCode,
+          message: "success",
+          data: user,
+        });
+      } else {
+        res.status(500).json({
+          status: res.statusCode,
+          message: "server error",
+          data: "",
+        });
+      }
+    } else {
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: "server error",
+      data: "",
+    });
+  }
+});
 export default {
   login,
   isLoggedIn,
@@ -76,4 +129,5 @@ export default {
   isAuthenticatedCallBack,
   isFailureLogin,
   Logout,
+  changePassword,
 };
