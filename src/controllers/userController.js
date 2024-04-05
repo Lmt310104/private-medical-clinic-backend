@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 
 const getAllUser = asyncHandler(async (req, res, next) => {
+  console.log("this is authentication", req.isAuthenticated());
   try {
     if (req.isAuthenticated()) {
       const users = await db.users.findAll({
