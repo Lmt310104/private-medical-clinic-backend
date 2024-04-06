@@ -18,11 +18,11 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
       data: patients,
     });
     // } else {
-    res.status(401).json({
-      status: res.statusCode,
-      message: "Unauthorized",
-      data: "",
-    });
+    // res.status(401).json({
+    //   status: res.statusCode,
+    //   message: "Unauthorized",
+    //   data: "",
+    // });
     // }
   } catch (err) {
     res.status(500).json({
@@ -77,11 +77,11 @@ const createPatient = asyncHandler(async (req, res, next) => {
       }
     }
     // } else {
-    res.status(401).json({
-      status: res.statusCode,
-      message: "Unauthorized",
-      data: "",
-    });
+    // res.status(401).json({
+    //   status: res.statusCode,
+    //   message: "Unauthorized",
+    //   data: "",
+    // });
     // }
   } catch (err) {
     res.status(500).json({
@@ -153,11 +153,11 @@ const updatePatientById = asyncHandler(async (req, res, next) => {
       });
     }
     // } else {
-    res.status(401).json({
-      status: res.statusCode,
-      message: "Unauthorized",
-      data: "",
-    });
+    // res.status(401).json({
+    //   status: res.statusCode,
+    //   message: "Unauthorized",
+    //   data: "",
+    // });
     // }
   } catch (err) {
     res.status(500).json({
@@ -187,11 +187,11 @@ const deletePatientById = asyncHandler(async (req, res, next) => {
       data: "",
     });
     // } else {
-    res.status(401).json({
-      status: res.statusCode,
-      message: "Unauthorized",
-      data: "",
-    });
+    // res.status(401).json({
+    //   status: res.statusCode,
+    //   message: "Unauthorized",
+    //   data: "",
+    // });
     // }
   } catch (err) {
     res.status(500).json({

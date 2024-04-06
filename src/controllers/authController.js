@@ -26,31 +26,27 @@ const login = async (req, res, next) => {
 };
 const isLoggedIn = (req, res, next) => {
   // if (req.isAuthenticated()) {
-    return next();
+  return next();
   // }
   res.status(401).json({ message: "You are not authenticated" });
 };
 const isAuthenticatedCallBack = () => {};
 const isSuccessLogin = asyncHandler(async (req, res) => {
-<<<<<<< HEAD
   console.log("this is use from auth controlleor", req.user);
   // if (req.isAuthenticated()) {
-=======
-  if (req.isAuthenticated()) {
->>>>>>> 1b2c1401065b0eb7e51f82a7dace1bbf4c4ba45d
-    const user = await db.users.findOne({ where: { id: req.user.user.id } });
-    if (!user) {
-      res.status(401).json({ message: "User not found" });
-    }
-    console.log(user.refreshToken);
-    console.log(req.user.refreshToken);
-    console;
-    if (user.refreshToken !== req.user.refreshToken) {
-      req.logOut();
-      req.session.destroy();
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    res.status(200).json({ message: "You are logged in", user: req.user });
+  const user = await db.users.findOne({ where: { id: req.user.user.id } });
+  if (!user) {
+    res.status(401).json({ message: "User not found" });
+  }
+  console.log(user.refreshToken);
+  console.log(req.user.refreshToken);
+  console;
+  if (user.refreshToken !== req.user.refreshToken) {
+    req.logOut();
+    req.session.destroy();
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  res.status(200).json({ message: "You are logged in", user: req.user });
   // }
 });
 const isFailureLogin = (req, res) => {
@@ -58,19 +54,19 @@ const isFailureLogin = (req, res) => {
 };
 const Logout = (req, res, next) => {
   // if (req.isAuthenticated()) {
-    req.logOut((err) => {
+  req.logOut((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy((err) => {
       if (err) {
         return next(err);
       }
-      req.session.destroy((err) => {
-        if (err) {
-          return next(err);
-        }
-        return res.status(200).json({ message: "You have logged out" });
-      });
+      return res.status(200).json({ message: "You have logged out" });
     });
+  });
   // } else {
-    res.status(401).json({ message: "You are not authenticated" });
+  res.status(401).json({ message: "You are not authenticated" });
   // }
 };
 const changePassword = async (req, res, next) => {};

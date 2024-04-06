@@ -5,48 +5,40 @@ const auth = require("./middleware/passport");
 const app = express();
 const PORT = process.env.PORT || 8888;
 const session = require("express-session");
-const cookieParser = require("cookie-parser");
 const secretSessionKey = process.env.SECRET_SESSION_KEY;
-import { authenticateAccessToken } from "./middleware/jwt";
+
+//connect to database
 connection();
 
-app.use(cookieParser());
+//cors
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+  })
+);
 
+app.use(express.json());
+
+//session
 app.use(
   session({
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false, maxAge: 60 * 60 * 1000 },
-    proxy: true,
   })
 );
-
 app.use(auth.initialize());
 app.use(auth.session());
-//db connection
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", "true"); // Thiết lập Access-Control-Allow-Credentials thành true
+  next();
+});
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-    allowedHeaders: "*",
-  })
-);
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //routes
-
-app.get("/", authenticateAccessToken, function (req, res) {
-  // Cookies that have not been signed
-  console.log("Cookies: ", req.cookies);
-
-  // Cookies that have been signed
-  console.log("Signed Cookies: ", req.signedCookies);
-  res.json({ id: "hihihi" });
-});
 
 app.use("/api/v1/auth", require("./routes/authRouter"));
 app.use("/api/v1/drugs", require("./routes/drugRouter"));
@@ -60,6 +52,7 @@ app.use(
   "/api/v1/appointmentrecords",
   require("./routes/appointmentRecordRouter")
 );
+app.use("/api/v1/appointmentlists", require("./routes/appointmentListRouter"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
