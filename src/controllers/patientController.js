@@ -49,10 +49,10 @@ const createPatient = asyncHandler(async (req, res, next) => {
     });
 
     if (existingPatient) {
-      res.status(400).json({
+      res.status(200).json({
         status: res.statusCode,
         message: "Patient already exists",
-        data: "",
+        data: existingPatient,
       });
     } else {
       const patient = await db.patients.create({

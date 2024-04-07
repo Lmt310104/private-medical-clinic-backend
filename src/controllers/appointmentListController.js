@@ -6,25 +6,25 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
   try {
     // if (req.isAuthenticated()) {
     // try {
-      const appointmentList = await db.appointmentList.findAll({
-        include: [
-          {
-            model: db.appointmentRecords,
-            as: "appointmentRecords",
-            attributes: { exclude: ["createdAt", "updatedAt"] },
-          },
-          {
-            model: db.patients,
-            as: "patients",
-            attributes: { exclude: ["createdAt", "updatedAt"] },
-          },
-        ],
-      });
-      res.status(200).json({
-        status: res.statusCode,
-        success: "success",
-        data: appointmentList,
-      });
+    const appointmentList = await db.appointmentList.findAll({
+      include: [
+        {
+          model: db.appointmentRecords,
+          as: "appointmentRecords",
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+        {
+          model: db.patients,
+          as: "patients",
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+      ],
+    });
+    res.status(200).json({
+      status: res.statusCode,
+      success: "success",
+      data: appointmentList,
+    });
     // } catch (err) {
     //   res.status(500).json({
     //     status: res.statusCode,
@@ -52,6 +52,7 @@ const createAppointmentList = asyncHandler(async (req, res) => {
   try {
     // if (req.isAuthenticated()) {
     const { scheduleDate } = req.body;
+    console.log("This is thong from backend", req.body);
     if (!scheduleDate) {
       res.status(400).json({
         status: res.statusCode,
@@ -59,14 +60,29 @@ const createAppointmentList = asyncHandler(async (req, res) => {
         data: "",
       });
     }
-    const appointmentList = await db.appointmentList.create({
-      scheduleDate: scheduleDate,
+
+    const existingAppointmentList = await db.appointmentList.findOne({
+      where: { scheduleDate },
     });
-    res.status(201).json({
-      status: res.statusCode,
-      success: "success",
-      data: appointmentList,
-    });
+
+    if (existingAppointmentList) {
+      res.status(200).json({
+        status: res.statusCode,
+        success: "existingAppointmentList",
+        data: existingAppointmentList,
+      });
+    } else {
+      const appointmentList = await db.appointmentList.create({
+        scheduleDate: scheduleDate,
+      });
+
+      res.status(200).json({
+        status: res.statusCode,
+        success: "appointmentList",
+        data: appointmentList,
+      });
+    }
+
     // } else {
     //   res.status(401).json({
     //     status: res.statusCode,

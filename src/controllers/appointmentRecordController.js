@@ -28,47 +28,45 @@ const getAllAppointmentRecords = asyncHandler(async (req, res, next) => {
 const createAppointmentRecord = asyncHandler(async (req, res, next) => {
   try {
     // if (req.isAuthenticated()) {
-    const { patientId, symptoms, diseaseId, appointmentListId } = req.body;
-    if (!patientId || !symptoms || !diseaseId || !appointmentListId) {
-      res.status(400).json({
-        status: res.statusCode,
-        message: "All fields are required",
-        data: "",
+      const { patientId, symptoms, diseaseId, appointmentListId } = req.body;
+      if (!patientId || !symptoms || !diseaseId || !appointmentListId) {
+        res.status(400).json({
+          status: res.statusCode,
+          message: "All fields are required",
+          data: "",
+        });
+      }
+      const appointmentRecord = await db.appointmentRecords.create({
+        patientId: patientId,
+        symptoms: symptoms,
+        diseaseId: diseaseId,
+        appointmentListId: appointmentListId,
       });
-    }
-    const appointmentRecord = await db.appointmentRecords.create({
-      patientId: patientId,
-      symptoms: symptoms,
-      diseaseId: diseaseId,
-      appointmentListId: appointmentListId,
-    });
-    console.log("i have sent a request");
-
-    const responseAppointmentRecord = await db.appointmentRecords.findOne({
-      where: { id: appointmentRecord.id },
-      include: [
-        {
-          model: db.diseases,
-          as: "disease",
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-        },
-        {
-          model: db.appointmentList,
-          as: "appointmentList",
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-        },
-        {
-          model: db.patients,
-          as: "patient",
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-        },
-      ],
-    });
-    res.status(200).json({
-      status: res.statusCode,
-      message: "success",
-      data: responseAppointmentRecord,
-    });
+      const responseAppointmentRecord = await db.appointmentRecords.findOne({
+        where: { id: appointmentRecord.id },
+        include: [
+          {
+            model: db.diseases,
+            as: "disease",
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+          },
+          {
+            model: db.appointmentList,
+            as: "appointmentList",
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+          },
+          {
+            model: db.patients,
+            as: "patient",
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+          },
+        ],
+      });
+      res.status(200).json({
+        status: res.statusCode,
+        message: "success",
+        data: responseAppointmentRecord,
+      });
     // }
   } catch (err) {
     res.status(500).json({

@@ -15,5 +15,6 @@ router
   .get(authController.isLoggedIn, authController.isSuccessLogin);
 router.route("/failure").get(authController.isFailureLogin);
 router.route("/logout").get(authController.Logout);
+router.route("/change-password").put(authController.changePassword);
 
 module.exports = router;
