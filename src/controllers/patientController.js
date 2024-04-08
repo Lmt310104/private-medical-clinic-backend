@@ -1,10 +1,19 @@
 import db from "../models/index.js";
 import asyncHandler from "express-async-handler";
+const { Op } = require("sequelize");
 
 const getAllPatients = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const patients = await db.patients.findAll();
+      const name = req.query.name || "";
+      const phoneNumber = req.query.phoneNumber || "";
+      const orderBy = req.query.orderBy || "fullName";
+      const patients = await db.patients.findAll({
+        where: {
+          [Op.or]: [{ fullName: name }, { phoneNumber: phoneNumber }],
+        },
+        order: [[orderBy, "ASC"]],
+      });
       if (!patients) {
         res.status(500).json({
           status: res.statusCode,
