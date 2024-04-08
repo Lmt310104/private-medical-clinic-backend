@@ -10,7 +10,7 @@ require("dotenv").config();
 
 const auth = new passport.Passport();
 
-// sign in with google
+//sign in with google
 auth.use(
   new GoogleStategy(
     {
