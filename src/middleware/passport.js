@@ -53,13 +53,10 @@ auth.use(
           };
           cb(null, userResponse);
         } else {
-          cb(null, false, {
-            message:
-              "User not found, are you sure you have an account with this email?",
-          });
+          cb(null, false);
         }
       } catch (err) {
-        cb(null, false, { message: "Something went wrong" });
+        cb(null, false);
       }
     }
   )
@@ -94,24 +91,25 @@ auth.use(
             refreshToken: refreshToken,
             accessToken: generateAccessToken(userData),
           };
+          console.log("Passport js thanh cong");
           done(null, userResponse);
         } else {
-          return done(null, false, {
-            message: "Username or password incorrect.",
-          });
+          return done(null, false);
         }
       } catch (err) {
-        return done(null, false, { message: "Something went wrong" });
+        return done(null, false);
       }
     })
   )
 );
 // Serialize User function to be used by
 auth.serializeUser((user, done) => {
+  console.log("serializeUser thanh cong");
   done(null, user);
 });
 // Deserialize User function to be used by
-auth.deserializeUser((user, done) => {
+auth.deserializeUser(function (user, done) {
+  console.log("deserializeUser thanh cong");
   done(null, user);
 });
 module.exports = auth;

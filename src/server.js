@@ -1,19 +1,28 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { connection } from "./config/connectDB";
 const auth = require("./middleware/passport");
 const app = express();
 const PORT = process.env.PORT || 8888;
 const session = require("express-session");
 const secretSessionKey = process.env.SECRET_SESSION_KEY;
+
+//connect to database
 connection();
 
-app.get('/test', (req,res)=>{
-  res.json({
-    "hi":"hi"
+//cors
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
   })
-})
+);
 
+app.use(express.json());
+
+//session
 app.use(
   session({
     secret: secretSessionKey,
@@ -22,18 +31,13 @@ app.use(
     cookie: { secure: false, maxAge: 60 * 60 * 1000 },
   })
 );
+app.use(cookieParser());
 app.use(auth.initialize());
 app.use(auth.session());
-//db connection
+app.use(function (req, res, next) {
+  next();
+});
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-  })
-);
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //routes
@@ -51,6 +55,10 @@ app.use(
   require("./routes/appointmentRecordRouter")
 );
 app.use("/api/v1/appointmentlists", require("./routes/appointmentListRouter"));
+app.use(
+  "/api/v1/appointmentlistpatients",
+  require("./routes/appointmentListPatientRouter")
+);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
