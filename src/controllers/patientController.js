@@ -1,28 +1,29 @@
 import db from "../models/index.js";
 import asyncHandler from "express-async-handler";
+const { Op } = require("sequelize");
 
 const getAllPatients = asyncHandler(async (req, res, next) => {
   try {
     // if (req.isAuthenticated()) {
-    const patients = await db.patients.findAll();
-    if (!patients) {
-      res.status(500).json({
+      const patients = await db.patients.findAll();
+      if (!patients) {
+        res.status(500).json({
+          status: res.statusCode,
+          message: "server error",
+          data: "",
+        });
+      }
+      res.status(200).json({
         status: res.statusCode,
-        message: "server error",
-        data: "",
+        message: "All patients",
+        data: patients,
       });
-    }
-    res.status(200).json({
-      status: res.statusCode,
-      message: "All patients",
-      data: patients,
-    });
     // } else {
-    // res.status(401).json({
-    //   status: res.statusCode,
-    //   message: "Unauthorized",
-    //   data: "",
-    // });
+    //   res.status(401).json({
+    //     status: res.statusCode,
+    //     message: "Unauthorized",
+    //     data: "",
+    //   });
     // }
   } catch (err) {
     res.status(500).json({
