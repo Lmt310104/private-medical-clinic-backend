@@ -1,30 +1,30 @@
 const router = require("express").Router();
-import appointmentListPatientController from "../controllers/appointmentListPatientController";
+import appointmentRecordDetailController from "../controllers/appointmentRecordDetailController";
 import { authenticateAccessToken } from "../middleware/jwt";
 
 router
   .route("/")
   .get(
     authenticateAccessToken,
-    appointmentListPatientController.getAllAppointmentList
+    appointmentRecordDetailController.getAllAppointmentRecordDetails
   )
   .post(
     authenticateAccessToken,
-    appointmentListPatientController.createAppointmentListPatient
+    appointmentRecordDetailController.createAppointmentRecordDetail
   );
 router
   .route("/:id")
   .get(
     authenticateAccessToken,
-    appointmentListPatientController.getAppointmentListById
+    appointmentRecordDetailController.getAppointmentRecordDetailById
   )
   .put(
     authenticateAccessToken,
-    appointmentListPatientController.updateAppointmentListPatient
+    appointmentRecordDetailController.updateAppointmentRecordDetail
   )
   .delete(
     authenticateAccessToken,
-    appointmentListPatientController.deleteAppointmentListPatient
+    appointmentRecordDetailController.deleteAppointmentRecordDetail
   );
 
 module.exports = router;
