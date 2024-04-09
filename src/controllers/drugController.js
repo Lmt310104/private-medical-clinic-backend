@@ -1,18 +1,18 @@
 const db = require("../models/index");
 const asyncHandler = require("express-async-handler");
-const moment = require("moment");
+const { Op } = require("sequelize");
 
 const getAllDrugs = asyncHandler(async (req, res) => {
   try {
     // if (req.isAuthenticated()) {
-    try {
-      const drugs = await db.drugs.findAll();
-      res.status(200).json({ drugs: drugs });
-    } catch (err) {
-      res.status(500).json({ message: "server error" });
-    }
+      try {
+        const drugs = await db.drugs.findAll();
+        res.status(200).json({ drugs: drugs });
+      } catch (err) {
+        res.status(500).json({ message: "server error" });
+      }
     // } else {
-    // res.status(401).json({ message: "Unauthorized" });
+    //   res.status(401).json({ message: "Unauthorized" });
     // }
   } catch (err) {
     res.status(500).json({ message: "server error" });
@@ -20,7 +20,6 @@ const getAllDrugs = asyncHandler(async (req, res) => {
 });
 
 const addDrug = asyncHandler(async (req, res) => {
-  console.log("this is year", req.body);
   const drug = req.body;
   try {
     // if (req.isAuthenticated()) {
@@ -28,7 +27,6 @@ const addDrug = asyncHandler(async (req, res) => {
       const existingDrug = await db.drugs.findOne({
         where: { drugName: drug.drugName },
       });
-      console.log("this is existing drug", existingDrug);
       if (existingDrug) {
         return res.status(400).json({ message: "Drug already exists" });
       } else {

@@ -6,7 +6,6 @@ const getMaxNumOfPatients = asyncHandler(async (req, res, next) => {
   try {
     // if (req.isAuthenticated()) {
     const argument = await db.arguments.findAll();
-    console.log(argument);
     if (!argument) {
       res.status(404).json({ message: "Max number of patients not found" });
     }

@@ -5,19 +5,28 @@ const { Op } = require("sequelize");
 const getAllPatients = asyncHandler(async (req, res, next) => {
   try {
     // if (req.isAuthenticated()) {
-      const patients = await db.patients.findAll();
-      if (!patients) {
-        res.status(500).json({
-          status: res.statusCode,
-          message: "server error",
-          data: "",
-        });
-      }
-      res.status(200).json({
+    const name = req.query.name || "";
+    const phoneNumber = req.query.phoneNumber || "";
+    const orderBy = req.query.orderBy || "fullName";
+    // const patients = await db.patients.findAll({
+    //   where: {
+    //     [Op.or]: [{ fullName: name }, { phoneNumber: phoneNumber }],
+    //   },
+    //   order: [[orderBy, "ASC"]],
+    // });
+    const patients = await db.patients.findAll();
+    if (!patients) {
+      res.status(500).json({
         status: res.statusCode,
-        message: "All patients",
-        data: patients,
+        message: "server error",
+        data: "",
       });
+    }
+    res.status(200).json({
+      status: res.statusCode,
+      message: "All patients",
+      data: patients,
+    });
     // } else {
     //   res.status(401).json({
     //     status: res.statusCode,
@@ -36,7 +45,6 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
 const createPatient = asyncHandler(async (req, res, next) => {
   try {
     // if (req.isAuthenticated()) {
-    console.log("this is body", req.body);
     const { fullName, gender, birthYear, address, phoneNumber } = req.body;
     if (!fullName || !gender || !birthYear || !address || !phoneNumber) {
       res.status(400).json({
@@ -123,7 +131,6 @@ const updatePatientById = asyncHandler(async (req, res, next) => {
   try {
     // if (req.isAuthenticated()) {
     const { fullName, gender, birthYear, address, phoneNumber } = req.body;
-    console.log("this is i my patient", gender, req.params.id);
     const patient = await db.patients.update(
       {
         fullName: fullName,

@@ -2,7 +2,6 @@ import db from "../models/index.js";
 import asyncHandler from "express-async-handler";
 
 const getAllAppointmentList = asyncHandler(async (req, res) => {
-  console.log("this is all appointment list");
   try {
     // if (req.isAuthenticated()) {
     // try {
@@ -52,7 +51,6 @@ const createAppointmentList = asyncHandler(async (req, res) => {
   try {
     // if (req.isAuthenticated()) {
     const { scheduleDate } = req.body;
-    console.log("This is thong from backend", req.body);
     if (!scheduleDate) {
       res.status(400).json({
         status: res.statusCode,

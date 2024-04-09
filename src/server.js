@@ -34,10 +34,10 @@ app.use(
 app.use(cookieParser());
 app.use(auth.initialize());
 app.use(auth.session());
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Credentials", "true"); // Thiết lập Access-Control-Allow-Credentials thành true
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Credentials", "true"); // Thiết lập Access-Control-Allow-Credentials thành true
+//   next();
+// });
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -59,6 +59,10 @@ app.use("/api/v1/appointmentlists", require("./routes/appointmentListRouter"));
 app.use(
   "/api/v1/appointmentlistpatients",
   require("./routes/appointmentListPatientRouter")
+);
+app.use(
+  "/api/v1/appointmentrecorddetails",
+  require("./routes/appointmentRecordDetailRouter")
 );
 
 app.listen(PORT, () => {

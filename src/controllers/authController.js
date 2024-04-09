@@ -71,7 +71,7 @@ const Logout = (req, res, next) => {
 };
 const changePassword = asyncHandler(async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
+    // if (req.isAuthenticated()) {
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
@@ -108,13 +108,13 @@ const changePassword = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
-    } else {
-      res.status(401).json({
-        status: res.statusCode,
-        message: "Unauthorized",
-        data: "",
-      });
-    }
+    // } else {
+    //   res.status(401).json({
+    //     status: res.statusCode,
+    //     message: "Unauthorized",
+    //     data: "",
+    //   });
+    // }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,

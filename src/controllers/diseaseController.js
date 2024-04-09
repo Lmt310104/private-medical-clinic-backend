@@ -4,13 +4,13 @@ import asyncHandler from "express-async-handler";
 const getAllDiseases = asyncHandler(async (req, res) => {
   try {
     // if (req.isAuthenticated()) {
-    const diseases = await db.diseases.findAll();
-    if (!diseases) {
-      res.status(404).json({ message: "Not found" });
-    }
-    res.status(200).json({ success: "success", diseases: diseases });
+      const diseases = await db.diseases.findAll();
+      if (!diseases) {
+        res.status(404).json({ message: "Not found" });
+      }
+      res.status(200).json({ success: "success", diseases: diseases });
     // } else {
-    // res.status(401).json({ message: "Unauthorized" });
+    //   res.status(401).json({ message: "Unauthorized" });
     // }
   } catch (error) {
     res.status(500).json({
