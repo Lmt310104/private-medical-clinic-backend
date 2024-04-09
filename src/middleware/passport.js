@@ -67,6 +67,7 @@ auth.use(
     asyncHandler(async (username, password, done) => {
       try {
         const user = await db.users.findOne({ where: { userName: username } });
+        console.log(user);
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },
         });
