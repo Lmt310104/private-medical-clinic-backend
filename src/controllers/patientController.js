@@ -10,7 +10,10 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
       const orderBy = req.query.orderBy || "fullName";
       const patients = await db.patients.findAll({
         where: {
-          [Op.or]: [{ fullName: name }, { phoneNumber: phoneNumber }],
+          [Op.or]: [
+            { fullName: { [Op.like]: `%${name}%` } },
+            { phoneNumber: phoneNumber },
+          ],
         },
         order: [[orderBy, "ASC"]],
       });

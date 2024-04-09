@@ -59,6 +59,10 @@ app.use(
   "/api/v1/appointmentlistpatients",
   require("./routes/appointmentListPatientRouter")
 );
+app.use(
+  "/api/v1/appointmentrecorddetails",
+  require("./routes/appointmentRecordDetailRouter")
+);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

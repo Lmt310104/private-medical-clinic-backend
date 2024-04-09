@@ -1,12 +1,22 @@
 const db = require("../models/index");
 const asyncHandler = require("express-async-handler");
-const moment = require("moment");
+const { Op } = require("sequelize");
 
 const getAllDrugs = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      const drugName = req.query.drugName || "";
+      const orderBy = req.query.orderBy || "drugName";
+      const order = req.query.order || "ASC";
       try {
-        const drugs = await db.drugs.findAll();
+        const drugs = await db.drugs.findAll(
+          {
+            where: { drugName: { [Op.like]: `%${drugName}%` } },
+          },
+          {
+            order: [[orderBy, order]],
+          }
+        );
         res.status(200).json({ drugs: drugs });
       } catch (err) {
         res.status(500).json({ message: "server error" });
