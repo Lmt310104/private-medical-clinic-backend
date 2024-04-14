@@ -32,7 +32,6 @@ const isLoggedIn = (req, res, next) => {
 };
 const isAuthenticatedCallBack = () => {};
 const isSuccessLogin = asyncHandler(async (req, res) => {
-  console.log("this is use from auth controlleor", req.user);
   // if (req.isAuthenticated()) {
   const user = await db.users.findOne({ where: { id: req.user.user.id } });
   if (!user) {

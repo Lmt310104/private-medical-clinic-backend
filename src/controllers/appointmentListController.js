@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../models/index.js";
 import asyncHandler from "express-async-handler";
 
@@ -60,7 +61,7 @@ const createAppointmentList = asyncHandler(async (req, res) => {
     }
 
     const existingAppointmentList = await db.appointmentList.findOne({
-      where: { scheduleDate },
+      where: { scheduleDate: new Date(scheduleDate) },
     });
 
     if (existingAppointmentList) {
@@ -96,6 +97,7 @@ const createAppointmentList = asyncHandler(async (req, res) => {
     });
   }
 });
+
 const getAppointmentListById = asyncHandler(async (req, res) => {});
 const updateAppointmentListById = asyncHandler(async (req, res) => {});
 const deleteAppointmentListById = asyncHandler(async (req, res) => {});

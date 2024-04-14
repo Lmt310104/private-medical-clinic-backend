@@ -5,16 +5,22 @@ const { Op } = require("sequelize");
 const getAllPatients = asyncHandler(async (req, res, next) => {
   try {
     // if (req.isAuthenticated()) {
-    const name = req.query.name || "";
-    const phoneNumber = req.query.phoneNumber || "";
-    const orderBy = req.query.orderBy || "fullName";
-    // const patients = await db.patients.findAll({
-    //   where: {
-    //     [Op.or]: [{ fullName: name }, { phoneNumber: phoneNumber }],
-    //   },
-    //   order: [[orderBy, "ASC"]],
-    // });
+    // let patients;
+    // if (req.query.name.trim()!=="" || req.query.phoneNumber.trim()!=="") {
+    //   const name = req.query.name || "";
+    //   const phoneNumber = req.query.phoneNumber || "";
+    //   const orderBy = req.query.orderBy || "fullName";
+    //   patients = await db.patients.findAll({
+    //     where: {
+    //       [Op.or]: [{ fullName: name }, { phoneNumber: phoneNumber }],
+    //     },
+    //     order: [[orderBy, "ASC"]],
+    //   });
+    // } else {
+    // }
+
     const patients = await db.patients.findAll();
+
     if (!patients) {
       res.status(500).json({
         status: res.statusCode,
