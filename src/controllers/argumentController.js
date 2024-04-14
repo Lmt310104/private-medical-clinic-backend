@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 const getMaxNumOfPatients = asyncHandler(async (req, res, next) => {
   console.log("i geet it");
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const argument = await db.arguments.findAll();
     if (!argument) {
       res.status(404).json({ message: "Max number of patients not found" });
@@ -13,16 +13,16 @@ const getMaxNumOfPatients = asyncHandler(async (req, res, next) => {
       message: "Max number of patients",
       maxNumOfPatients: argument,
     });
-    // } else {
-    // res.status(401).json({ message: "You are not authenticated" });
-    // }
+     } else {
+     res.status(401).json({ message: "You are not authenticated" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
 });
 const updateMaxNumOfPatients = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const { maxNumberOfPatients } = req.body;
     if (!maxNumberOfPatients) {
       res.status(400).json({ message: "Max number of patients is required" });
@@ -40,24 +40,24 @@ const updateMaxNumOfPatients = asyncHandler(async (req, res, next) => {
       message: "Max number of patients updated",
       maxNumOfPatients: argument,
     });
-    // } else {
-    // res.status(401).json({ message: "You are not authenticated" });
-    // }
+     } else {
+     res.status(401).json({ message: "You are not authenticated" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
 });
 const getFeeConsult = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const argument = await db.arguments.findAll();
     if (!argument) {
       res.status(404).json({ message: "Fee consult not found" });
     }
     res.status(200).json({ message: "Fee consult", feeConsult: argument });
-    // } else {
-    // res.status(401).json({ message: "You are not authenticated" });
-    // }
+     } else {
+     res.status(401).json({ message: "You are not authenticated" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
@@ -65,7 +65,7 @@ const getFeeConsult = asyncHandler(async (req, res, next) => {
 const updateFeeConsult = asyncHandler(async (req, res, next) => {
 
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const { feeConsult } = req.body;
     if (!feeConsult) {
       res.status(400).json({ message: "Fee consult is required" });
@@ -83,9 +83,9 @@ const updateFeeConsult = asyncHandler(async (req, res, next) => {
       message: "Fee consult updated",
       feeConsult: argument,
     });
-    // } else {
-    // res.status(401).json({ message: "You are not authenticated" });
-    // }
+     } else {
+     res.status(401).json({ message: "You are not authenticated" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }

@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 const getAllPatients = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
     // let patients;
     // if (req.query.name.trim()!=="" || req.query.phoneNumber.trim()!=="") {
     //   const name = req.query.name || "";
@@ -33,13 +33,14 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
       message: "All patients",
       data: patients,
     });
-    // } else {
-    //   res.status(401).json({
-    //     status: res.statusCode,
-    //     message: "Unauthorized",
-    //     data: "",
-    //   });
-    // }
+    } else {
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
+    }
+
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -50,7 +51,7 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
 });
 const createPatient = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
     const { fullName, gender, birthYear, address, phoneNumber } = req.body;
     if (!fullName || !gender || !birthYear || !address || !phoneNumber) {
       res.status(400).json({
@@ -91,13 +92,13 @@ const createPatient = asyncHandler(async (req, res, next) => {
         });
       }
     }
-    // } else {
-    // res.status(401).json({
-    //   status: res.statusCode,
-    //   message: "Unauthorized",
-    //   data: "",
-    // });
-    // }
+    } else {
+    res.status(401).json({
+      status: res.statusCode,
+      message: "Unauthorized",
+      data: "",
+    });
+    }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -108,7 +109,7 @@ const createPatient = asyncHandler(async (req, res, next) => {
 });
 const getPatientById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
     const patient = await db.patients.findOne({
       where: { id: req.params.id },
     });
@@ -124,7 +125,7 @@ const getPatientById = asyncHandler(async (req, res, next) => {
       message: "Patient found",
       data: patient,
     });
-    // }
+    }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -135,7 +136,7 @@ const getPatientById = asyncHandler(async (req, res, next) => {
 });
 const updatePatientById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
     const { fullName, gender, birthYear, address, phoneNumber } = req.body;
     const patient = await db.patients.update(
       {
@@ -166,13 +167,13 @@ const updatePatientById = asyncHandler(async (req, res, next) => {
         data: responsePatient,
       });
     }
-    // } else {
-    // res.status(401).json({
-    //   status: res.statusCode,
-    //   message: "Unauthorized",
-    //   data: "",
-    // });
-    // }
+    } else {
+    res.status(401).json({
+      status: res.statusCode,
+      message: "Unauthorized",
+      data: "",
+    });
+    }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -183,7 +184,7 @@ const updatePatientById = asyncHandler(async (req, res, next) => {
 });
 const deletePatientById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
     const patient = await db.patients.destroy({
       where: { id: req.params.id },
     });
@@ -200,13 +201,13 @@ const deletePatientById = asyncHandler(async (req, res, next) => {
       message: "Patient deleted",
       data: "",
     });
-    // } else {
-    // res.status(401).json({
-    //   status: res.statusCode,
-    //   message: "Unauthorized",
-    //   data: "",
-    // });
-    // }
+    } else {
+    res.status(401).json({
+      status: res.statusCode,
+      message: "Unauthorized",
+      data: "",
+    });
+    }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,

@@ -3,7 +3,7 @@ import asyncHandler from "express-async-handler";
 
 const getAllAppointmentRecords = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
       if (req.query.patientId) {
         const appointmentRecord = await db.appointmentRecords.findAll({
           where: { patientId: req.query.patientId },
@@ -57,13 +57,13 @@ const getAllAppointmentRecords = asyncHandler(async (req, res, next) => {
           data: appointmentRecord,
         });
       }
-    // } else {
-    //   res.status(401).json({
-    //     status: res.statusCode,
-    //     message: "Unauthorized",
-    //     data: "",
-    //   });
-    // }
+     } else {
+       res.status(401).json({
+         status: res.statusCode,
+         message: "Unauthorized",
+         data: "",
+       });
+     }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -74,7 +74,7 @@ const getAllAppointmentRecords = asyncHandler(async (req, res, next) => {
 });
 const createAppointmentRecord = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
       const { patientId, symptoms, diseaseId, appointmentListId } = req.body;
       if (!patientId || !symptoms || !diseaseId || !appointmentListId) {
         res.status(400).json({
@@ -114,7 +114,7 @@ const createAppointmentRecord = asyncHandler(async (req, res, next) => {
         message: "success",
         data: responseAppointmentRecord,
       });
-    // }
+     }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -125,7 +125,7 @@ const createAppointmentRecord = asyncHandler(async (req, res, next) => {
 });
 const getAppointmentRecordById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const id = req.params.id;
     const appointmentRecord = await db.appointmentRecords.findOne({
       where: { id: req.params.id },
@@ -154,13 +154,13 @@ const getAppointmentRecordById = asyncHandler(async (req, res, next) => {
         data: appointmentRecord,
       });
     }
-    // } else {
+     } else {
     res.status(401).json({
       status: res.statusCode,
       message: "Unauthorized",
       data: "",
     });
-    // }
+     }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -171,7 +171,7 @@ const getAppointmentRecordById = asyncHandler(async (req, res, next) => {
 });
 const updateAppointmentRecordById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const { patientId, symptoms, diseaseId, appointmentListId } = req.body;
     if (!patientId || !symptoms || !diseaseId || !appointmentListId) {
       res.status(400).json({
@@ -214,7 +214,7 @@ const updateAppointmentRecordById = asyncHandler(async (req, res, next) => {
       message: "success",
       data: responseAppointmentRecord,
     });
-    // }
+     }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -225,7 +225,7 @@ const updateAppointmentRecordById = asyncHandler(async (req, res, next) => {
 });
 const deleteAppointmentRecordById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const appointmentRecord = await db.appointmentRecords.destroy({
       where: { id: req.params.id },
     });
@@ -234,7 +234,7 @@ const deleteAppointmentRecordById = asyncHandler(async (req, res, next) => {
       message: "success",
       data: appointmentRecord,
     });
-    // }
+     }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,

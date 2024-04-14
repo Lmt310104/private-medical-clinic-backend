@@ -4,16 +4,16 @@ const { Op } = require("sequelize");
 
 const getAllDrugs = asyncHandler(async (req, res) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
       try {
         const drugs = await db.drugs.findAll();
         res.status(200).json({ drugs: drugs });
       } catch (err) {
         res.status(500).json({ message: "server error" });
       }
-    // } else {
-    //   res.status(401).json({ message: "Unauthorized" });
-    // }
+     } else {
+       res.status(401).json({ message: "Unauthorized" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
@@ -22,7 +22,7 @@ const getAllDrugs = asyncHandler(async (req, res) => {
 const addDrug = asyncHandler(async (req, res) => {
   const drug = req.body;
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     try {
       const existingDrug = await db.drugs.findOne({
         where: { drugName: drug.drugName },
@@ -42,9 +42,9 @@ const addDrug = asyncHandler(async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: "server error" });
     }
-    // } else {
-    // res.status(401).json({ message: "Unauthorized" });
-    // }
+     } else {
+     res.status(401).json({ message: "Unauthorized" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
@@ -54,7 +54,7 @@ const searchDrugs = asyncHandler(async (req, res) => {});
 
 const getDrug = asyncHandler(async (req, res) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     try {
       const id = req.params.id;
       const drug = await db.drugs.findOne({ where: { id: id } });
@@ -65,9 +65,9 @@ const getDrug = asyncHandler(async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: "server error" });
     }
-    // } else {
-    // res.status(401).json({ message: "Unauthorized" });
-    // }
+     } else {
+     res.status(401).json({ message: "Unauthorized" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
@@ -75,7 +75,7 @@ const getDrug = asyncHandler(async (req, res) => {
 
 const updateDrug = asyncHandler(async (req, res) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     try {
       const id = req.params.id;
       const drug = req.body;
@@ -98,9 +98,9 @@ const updateDrug = asyncHandler(async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: "server error" });
     }
-    // } else {
-    // res.status(401).json({ message: "Unauthorized" });
-    // }
+     } else {
+     res.status(401).json({ message: "Unauthorized" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
@@ -108,7 +108,7 @@ const updateDrug = asyncHandler(async (req, res) => {
 
 const deleteDrug = asyncHandler(async (req, res) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     try {
       const id = req.params.id;
       const drug = await db.drugs.findOne({ where: { id: id } });
@@ -120,9 +120,9 @@ const deleteDrug = asyncHandler(async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: "server error" });
     }
-    // } else {
-    // res.status(401).json({ message: "Unauthorized" });
-    // }
+     } else {
+     res.status(401).json({ message: "Unauthorized" });
+     }
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }

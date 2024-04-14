@@ -4,8 +4,8 @@ import asyncHandler from "express-async-handler";
 
 const getAllAppointmentList = asyncHandler(async (req, res) => {
   try {
-    // if (req.isAuthenticated()) {
-    // try {
+     if (req.isAuthenticated()) {
+     try {
     const appointmentList = await db.appointmentList.findAll({
       include: [
         {
@@ -25,20 +25,20 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
       success: "success",
       data: appointmentList,
     });
-    // } catch (err) {
-    //   res.status(500).json({
-    //     status: res.statusCode,
-    //     message: "server error",
-    //     data: "",
-    //   });
-    // }
-    // } else {
-    //   res.status(401).json({
-    //     status: res.statusCode,
-    //     message: "Unauthorized",
-    //     data: "",
-    //   });
-    // }
+     } catch (err) {
+       res.status(500).json({
+         status: res.statusCode,
+         message: "server error",
+         data: "",
+       });
+     }
+     } else {
+       res.status(401).json({
+         status: res.statusCode,
+         message: "Unauthorized",
+         data: "",
+       });
+     }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,
@@ -50,7 +50,7 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
 
 const createAppointmentList = asyncHandler(async (req, res) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const { scheduleDate } = req.body;
     if (!scheduleDate) {
       res.status(400).json({
@@ -82,13 +82,13 @@ const createAppointmentList = asyncHandler(async (req, res) => {
       });
     }
 
-    // } else {
-    //   res.status(401).json({
-    //     status: res.statusCode,
-    //     message: "Unauthorized",
-    //     data: "",
-    //   });
-    // }
+     } else {
+       res.status(401).json({
+         status: res.statusCode,
+         message: "Unauthorized",
+         data: "",
+       });
+     }
   } catch (err) {
     res.status(500).json({
       status: res.statusCode,

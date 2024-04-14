@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 const getAllUnit = asyncHandler(async (req, res, next) => {
   console.log("this is me trying to access the units");
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const units = await db.unit.findAll();
     if (!units) {
       res.status(500).json({ message: "server error" });
@@ -13,11 +13,11 @@ const getAllUnit = asyncHandler(async (req, res, next) => {
       message: "success",
       units: units,
     });
-    // } else {
-    // res.status(401).json({
-    //   message: "Unauthorized",
-    // });
-    // }
+     } else {
+     res.status(401).json({
+       message: "Unauthorized",
+     });
+     }
   } catch (err) {
     res.status(500).json({
       message: "server error",
@@ -55,7 +55,7 @@ const createUnit = asyncHandler(async (req, res, next) => {
 
 const updateUnitById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const unitId = req.params.id;
     console.log(unitId);
     const { unitName } = req.body;
@@ -90,11 +90,11 @@ const updateUnitById = asyncHandler(async (req, res, next) => {
         });
       }
     }
-    // } else {
+     } else {
     res.status(401).json({
       message: "Unauthorized",
     });
-    // }
+     }
   } catch (err) {
     res.status(500).json({
       message: "server error",
@@ -104,7 +104,7 @@ const updateUnitById = asyncHandler(async (req, res, next) => {
 
 const deleteUnitById = asyncHandler(async (req, res, next) => {
   try {
-    // if (req.isAuthenticated()) {
+     if (req.isAuthenticated()) {
     const unitId = req.params.id;
     try {
       const unit = await db.unit.destroy({
@@ -125,11 +125,11 @@ const deleteUnitById = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       message: "success",
     });
-    // } else {
+     } else {
     res.status(401).json({
       message: "Unauthorized",
     });
-    // }
+     }
   } catch (err) {
     res.status(500).json({
       message: "server error",
