@@ -2,7 +2,6 @@ import db from "../models";
 import asyncHandler from "express-async-handler";
 
 const getMaxNumOfPatients = asyncHandler(async (req, res, next) => {
-  console.log("i geet it");
   try {
      if (req.isAuthenticated()) {
     const argument = await db.arguments.findAll();

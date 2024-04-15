@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 const { Op } = require("sequelize");
 
 const getAllDrugs = asyncHandler(async (req, res) => {
+  console.log("this is req in drug", req.isAuthenticated())
   try {
      if (req.isAuthenticated()) {
       try {

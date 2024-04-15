@@ -4,7 +4,6 @@ import asyncHandler from "express-async-handler";
 
 const login = async (req, res, next) => {
   await auth.authenticate("local", (err, user, info) => {
-    console.log("this is userr", user);
     if (err) {
       return next(err);
     }
@@ -21,7 +20,6 @@ const login = async (req, res, next) => {
         message: "You have successfully logged in",
       });
     });
-    console.log(req);
   })(req, res, next);
 };
 const isLoggedIn = (req, res, next) => {
@@ -51,8 +49,8 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
 const isFailureLogin = (req, res) => {
   res.status(401).json({ message: "failure" });
 };
+
 const Logout = (req, res, next) => {
-  console.log("this is logout call", req.isAuthenticated());
   if (req.isAuthenticated()) {
     req.logOut((err) => {
       if (err) {
@@ -69,9 +67,11 @@ const Logout = (req, res, next) => {
     res.status(401).json({ message: "You are not authenticated" });
   }
 };
+
 const changePassword = asyncHandler(async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {y
+
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
