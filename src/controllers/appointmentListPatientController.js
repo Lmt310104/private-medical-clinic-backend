@@ -6,30 +6,29 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
     if (req.isAuthenticated()) {
       try {
         const appointmentList = await db.appointmentListPatient.findAll({
-          // include: [
-          //   {
-          //     model: db.appointmentList,
-          //     as: "appointmentList",
-          //     attributes: { exclude: ["createdAt", "updatedAt"] },
-          //   },
-          //   {
-          //     model: db.patients,
-          //     as: "patient",
-          //     attributes: { exclude: ["createdAt", "updatedAt"] },
-          //   },
-          // ],
           attributes: {
             include: [
               [
                 sequelize.literal(`(
                   SELECT id
-                  FROM bills
+                  FROM bills AS bill
                   WHERE
-                      bills.patientId = appointmentlistpatients.patientId
-                      AND
-                      bills.appointmentListId = appointmentlistpatients.appointmentListId
-              )`),
+                    bill.patientId = appointmentListPatient.patientId
+                    AND
+                    bill.appointmentListId = appointmentListPatient.appointmentListId
+                )`),
                 "billId",
+              ],
+              [
+                sequelize.literal(`(
+                  SELECT id
+                  FROM appointmentRecords AS appointmentRecord
+                  WHERE
+                    appointmentRecord.patientId = appointmentListPatient.patientId
+                    AND
+                    appointmentRecord.appointmentListId = appointmentListPatient.appointmentListId
+                )`),
+                "appointmentRecordId",
               ],
             ],
           },
