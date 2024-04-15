@@ -92,7 +92,6 @@ auth.use(
             refreshToken: refreshToken,
             accessToken: generateAccessToken(userData),
           };
-          console.log("Passport js thanh cong");
           done(null, userResponse);
         } else {
           return done(null, false);

@@ -45,6 +45,7 @@ const addDrug = asyncHandler(async (req, res) => {
             price: drug.price,
             count: drug.count,
             unitId: drug.unitId,
+            note: drug.note || "",
           });
           console.log(newDrug);
           res.status(200).json({ message: "Drug added successfully" });
