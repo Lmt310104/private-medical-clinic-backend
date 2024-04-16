@@ -1,24 +1,39 @@
 import db from "../models/index";
 import asyncHandler from "express-async-handler";
-
+import sequelize from "sequelize";
 const getAllAppointmentList = asyncHandler(async (req, res) => {
   try {
      if (req.isAuthenticated()) {
       try {
         const appointmentList = await db.appointmentListPatient.findAll({
-          include: [
-            {
-              model: db.appointmentList,
-              as: "appointmentList",
-              attributes: { exclude: ["createdAt", "updatedAt"] },
-            },
-            {
-              model: db.patients,
-              as: "patient",
-              attributes: { exclude: ["createdAt", "updatedAt"] },
-            },
-          ],
+          attributes: {
+            include: [
+              [
+                sequelize.literal(`(
+                  SELECT id
+                  FROM bills AS bill
+                  WHERE
+                    bill.patientId = appointmentListPatient.patientId
+                    AND
+                    bill.appointmentListId = appointmentListPatient.appointmentListId
+                )`),
+                "billId",
+              ],
+              [
+                sequelize.literal(`(
+                  SELECT id
+                  FROM appointmentRecords AS appointmentRecord
+                  WHERE
+                    appointmentRecord.patientId = appointmentListPatient.patientId
+                    AND
+                    appointmentRecord.appointmentListId = appointmentListPatient.appointmentListId
+                )`),
+                "appointmentRecordId",
+              ],
+            ],
+          },
         });
+
         res.status(200).json({
           status: res.statusCode,
           message: "success",
@@ -139,7 +154,7 @@ const deleteAppointmentListPatient = asyncHandler(async (req, res) => {
     });
   }
 });
-const getAppointmentListById = asyncHandler(async (req, res) => {
+const getAppointmentListPatientById = asyncHandler(async (req, res) => {
   try {
      if (req.isAuthenticated()) {
       const appointmentList = await db.appointmentListPatient.findOne({
@@ -182,5 +197,5 @@ export default {
   createAppointmentListPatient,
   updateAppointmentListPatient,
   deleteAppointmentListPatient,
-  getAppointmentListById,
+  getAppointmentListPatientById,
 };

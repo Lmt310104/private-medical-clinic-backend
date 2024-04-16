@@ -188,7 +188,6 @@ const deletePatientById = asyncHandler(async (req, res, next) => {
     const patient = await db.patients.destroy({
       where: { id: req.params.id },
     });
-    console.log(patient);
     if (!patient) {
       res.status(404).json({
         status: res.statusCode,

@@ -1,6 +1,8 @@
 const db = require("../models/index");
 const auth = require("../middleware/passport");
 import asyncHandler from "express-async-handler";
+import bcrypt from "bcryptjs";
+// Routes
 
 const login = async (req, res, next) => {
   await auth.authenticate("local", (err, user, info) => {
@@ -37,7 +39,6 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
     }
     console.log(user.refreshToken);
     console.log(req.user.refreshToken);
-    console;
     if (user.refreshToken !== req.user.refreshToken) {
       req.logOut();
       req.session.destroy();
@@ -89,6 +90,7 @@ const changePassword = asyncHandler(async (req, res, next) => {
         });
       }
       const hashedPassword = await bcrypt.hashSync(password, 10);
+      console.log(hashedPassword);
       const user = await db.users.update(
         {
           password: hashedPassword,

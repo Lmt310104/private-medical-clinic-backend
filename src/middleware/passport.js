@@ -28,7 +28,6 @@ auth.use(
           include: [{ model: db.userGroup, as: "userGroup" }],
           where: { email: profile.emails[0].value },
         });
-        console.log("this is login with gooolge", user);
         if (user) {
           const userData = {
             username: user.dataValues.userName,
@@ -93,7 +92,6 @@ auth.use(
             refreshToken: refreshToken,
             accessToken: generateAccessToken(userData),
           };
-          console.log("Passport js thanh cong");
           done(null, userResponse);
         } else {
           return done(null, false);

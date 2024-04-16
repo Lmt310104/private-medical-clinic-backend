@@ -69,13 +69,7 @@ const createAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
       data: "",
     });
   }
-  console.log(
-    "this is record",
-    appointmentRecordId,
-    drugId,
-    count,
-    usageId
-  );
+
   const appointmentRecordDetail = await db.appointmentRecordDetails.create({
     appointmentRecordId: appointmentRecordId,
     drugId: drugId,

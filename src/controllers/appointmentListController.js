@@ -98,7 +98,32 @@ const createAppointmentList = asyncHandler(async (req, res) => {
   }
 });
 
-const getAppointmentListById = asyncHandler(async (req, res) => {});
+const getAppointmentListById = asyncHandler(async (req, res) => {
+  try {
+    if (req.isAuthenticated()) {
+     const appointmentList = await db.appointmentList.findOne({
+       where: { id: req.params.id },
+     });
+     res.status(200).json({
+       status: res.statusCode,
+       message: "success",
+       data: appointmentList,
+     });
+    } else {
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
+    }
+ } catch (err) {
+   res.status(500).json({
+     status: res.statusCode,
+     message: "server error",
+     data: "",
+   });
+ }
+});
 const updateAppointmentListById = asyncHandler(async (req, res) => {});
 const deleteAppointmentListById = asyncHandler(async (req, res) => {});
-export default { getAllAppointmentList, createAppointmentList };
+export default { getAllAppointmentList, createAppointmentList, getAppointmentListById };

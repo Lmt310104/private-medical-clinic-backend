@@ -3,20 +3,20 @@ const asyncHandler = require("express-async-handler");
 const { Op } = require("sequelize");
 
 const getAllDrugs = asyncHandler(async (req, res) => {
-  console.log("this is req in drug", req.isAuthenticated())
   try {
      if (req.isAuthenticated()) {
       try {
         const drugs = await db.drugs.findAll();
+        console.log("this is 1");
         res.status(200).json({ drugs: drugs });
       } catch (err) {
-        res.status(500).json({ message: "server error" });
+        res.status(500).json({ message: err });
       }
      } else {
        res.status(401).json({ message: "Unauthorized" });
      }
   } catch (err) {
-    res.status(500).json({ message: "server error" });
+    res.status(500).json({ message: "server error2" });
   }
 });
 
@@ -37,7 +37,6 @@ const addDrug = asyncHandler(async (req, res) => {
           count: drug.count,
           unitId: drug.unitId,
         });
-        console.log("this is new drug", newDrug);
         res.status(200).json({ message: "Drug added successfully" });
       }
     } catch (err) {
