@@ -11,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       appointmentList.hasMany(models.appointmentListPatient, {
         foreignKey: "appointmentListId",
       });
-      appointmentList.belongsToMany(models.patients, {
-        through: models.bills,
+      appointmentList.hasMany(models.bills, {
         foreignKey: "appointmentListId",
       });
       appointmentList.hasMany(models.appointmentRecords, {
