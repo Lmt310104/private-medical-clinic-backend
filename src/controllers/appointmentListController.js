@@ -7,18 +7,6 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
     if (req.isAuthenticated()) {
       try {
         const appointmentList = await db.appointmentList.findAll({
-          include: [
-            {
-              model: db.appointmentRecords,
-              as: "appointmentRecords",
-              attributes: { exclude: ["createdAt", "updatedAt"] },
-            },
-            {
-              model: db.patients,
-              as: "patients",
-              attributes: { exclude: ["createdAt", "updatedAt"] },
-            },
-          ],
         });
         res.status(200).json({
           status: res.statusCode,
