@@ -22,10 +22,8 @@ const login = async (req, res, next) => {
         message: "You have successfully logged in",
       });
     });
-    console.log(req);
   })(req, res, next);
 };
-
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -41,7 +39,6 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
     }
     console.log(user.refreshToken);
     console.log(req.user.refreshToken);
-    console;
     if (user.refreshToken !== req.user.refreshToken) {
       req.logOut();
       req.session.destroy();
@@ -53,6 +50,7 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
 const isFailureLogin = (req, res) => {
   res.status(401).json({ message: "failure" });
 };
+
 const Logout = (req, res, next) => {
   if (req.isAuthenticated()) {
     req.logOut((err) => {
@@ -70,9 +68,11 @@ const Logout = (req, res, next) => {
     res.status(401).json({ message: "You are not authenticated" });
   }
 };
+
 const changePassword = asyncHandler(async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {y
+
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({

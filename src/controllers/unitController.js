@@ -56,7 +56,6 @@ const updateUnitById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
       const unitId = req.params.id;
-      console.log(unitId);
       const { unitName } = req.body;
       if (!unitName) {
         res.status(400).json({

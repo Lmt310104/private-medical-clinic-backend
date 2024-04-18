@@ -28,7 +28,6 @@ auth.use(
           include: [{ model: db.userGroup, as: "userGroup" }],
           where: { email: profile.emails[0].value },
         });
-        console.log(user);
         if (user) {
           const userData = {
             username: user.dataValues.userName,
@@ -61,6 +60,7 @@ auth.use(
     }
   )
 );
+
 auth.use(
   "local",
   new LocalStatregy(

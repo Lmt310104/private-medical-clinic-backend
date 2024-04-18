@@ -21,6 +21,11 @@ const getAllBill = asyncHandler(async (req, res) => {
             { appointmentListId: appointmentListId },
           ],
         });
+        res.status(200).json({
+          status: res.statusCode,
+          message: "success",
+          data: bill,
+        });
       }
     } else {
       res.status(401).json({
