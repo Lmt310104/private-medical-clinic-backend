@@ -4,37 +4,22 @@ import asyncHandler from "express-async-handler";
 const getAllDiseases = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      const diseaseName = req.query.diseaseName || "";
-      const orderBy = req.query.orderBy || "diseaseName";
-      const order = req.query.order || "ASC";
-      if (diseaseName) {
-        const diseases = await db.diseases.findAll(
-          {
-            where: { diseaseName: { [Op.like]: `%${diseaseName}%` } },
-          },
-          {
-            order: [[orderBy, order]],
-          }
-        );
-        if (!diseases) {
-          res.status(404).json({ message: "Not found" });
-        }
-        res.status(200).json({
-          status: res.statusCode,
-          message: "success",
-          diseases: diseases,
-        });
-      } else {
-        const diseases = await db.diseases.findAll({
-          order: [[orderBy, order]],
-        });
-
-        res.status(200).json({
-          status: res.statusCode,
-          message: "success",
-          diseases: diseases,
-        });
+      // const diseaseName = req.query.diseaseName || "";
+      // const orderBy = req.query.orderBy || "diseaseName";
+      // const order = req.query.order || "ASC";
+      // const diseases = await db.diseases.findAll(
+      //   {
+      //     where: { diseaseName: { [Op.like]: `%${diseaseName}%` } },
+      //   },
+      //   {
+      //     order: [[orderBy, order]],
+      //   }
+      // );
+      const diseases = await db.diseases.findAll();
+      if (!diseases) {
+        res.status(404).json({ message: "Not found" });
       }
+      res.status(200).json({ success: "success", diseases: diseases });
     } else {
       res.status(401).json({ message: "Unauthorized" });
     }
@@ -109,7 +94,7 @@ const deleteDiseaseById = asyncHandler(async (req, res) => {
         return res.status(404).json({ message: "Disease not found" });
       }
       await disease.destroy();
-      res.status(204).json({ success: "success" });
+      res.status(200).json({ success: "success" });
     } else {
       res.status(401).json({ message: "Unauthorized" });
     }

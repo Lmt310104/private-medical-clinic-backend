@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       patientId: DataTypes.INTEGER,
       appointmentListId: DataTypes.INTEGER,
       drugExpense: DataTypes.BIGINT,
+      feeConsult: DataTypes.BIGINT,
     },
     {
       sequelize,

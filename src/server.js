@@ -34,9 +34,10 @@ app.use(
 app.use(cookieParser());
 app.use(auth.initialize());
 app.use(auth.session());
-app.use(function (req, res, next) {
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Credentials", "true"); // Thiết lập Access-Control-Allow-Credentials thành true
+//   next();
+// });
 
 app.use(express.urlencoded({ extended: true }));
 

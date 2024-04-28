@@ -4,8 +4,8 @@ import { Op } from "sequelize";
 const getAllBill = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      const patientId = req.query.patientId || "";
-      const appointmentListId = req.query.appointmentListId || "";
+      const patientId = req.query.patientId ?? "";
+      const appointmentListId = req.query.appointmentListId ?? "";
       if (patientId === "" && appointmentListId === "") {
         const bill = await db.bills.findAll();
         res.status(200).json({
@@ -20,6 +20,11 @@ const getAllBill = asyncHandler(async (req, res) => {
             { patientId: patientId },
             { appointmentListId: appointmentListId },
           ],
+        });
+        res.status(200).json({
+          status: res.statusCode,
+          message: "success",
+          data: bill,
         });
       }
     } else {
@@ -69,6 +74,7 @@ const createBill = asyncHandler(async (req, res) => {
         patientId: bill.patientId,
         appointmentListId: bill.appointmentListId,
         drugExpense: bill.drugExpense,
+        feeConsult: bill.feeConsult,
       });
       res.status(200).json({
         status: res.statusCode,
@@ -109,6 +115,7 @@ const updateBillById = asyncHandler(async (req, res) => {
           patientId: bill.patientId,
           appointmentListId: bill.appointmentListId,
           drugExpense: bill.drugExpense,
+          feeConsult: bill.feeConsult,
         },
         { where: { id: req.params.id } }
       );
