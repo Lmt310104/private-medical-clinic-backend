@@ -6,7 +6,7 @@ npx sequelize-cli model:generate --name bills --attributes patientId:integer,app
 npx sequelize-cli model:generate --name appointmentList --attributes scheduleDate:date
 npx sequelize-cli model:generate --name patients --attributes fullName:string,gender:string,birthYear:integer,address:string,phoneNumber:string
 npx sequelize-cli model:generate --name appointmentRecords --attributes patientId:integer,symptoms:string,diseaseId:string,appointmentListId:integer
-npx sequelize-cli model:generate --name drugs --attributes drugName:string,price:bigint,count:integer,unitId:integer
+npx sequelize-cli model:generate --name drugs --attributes drugName:string,price:bigint,count:integer,unitId:integer,note:string
 npx sequelize-cli model:generate --name diseases --attributes diseaseName:string
 npx sequelize-cli model:generate --name unit --attributes unitName:string
 npx sequelize-cli model:generate --name monthlyRevenue --attributes month:integer,year:integer
@@ -27,4 +27,6 @@ db.users.create({
 });
 
 npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+
 

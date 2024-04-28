@@ -15,6 +15,9 @@ router
   .get(authController.isLoggedIn, authController.isSuccessLogin);
 router.route("/failure").get(authController.isFailureLogin);
 router.route("/logout").get(authController.Logout);
-router.route("/change-password").put(authController.changePassword);
-
+router.route("/change-password/:id").post(authController.changePassword);
+router.route("/reset-password/send-otp").post(authController.sendOTP);
+router.route("/check-email").post(authController.checkEmail);
+router.route("/check-otp").post(authController.checkOTPByEmail);
+router.route("/reset-password").post(authController.resetPassword);
 module.exports = router;
