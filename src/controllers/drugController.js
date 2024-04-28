@@ -102,7 +102,7 @@ const updateDrug = asyncHandler(async (req, res) => {
         );
         res
           .status(200)
-          .json({ message: "Drug updated successfully", durg: drug });
+          .json({ message: "Drug updated successfully", drug: drug });
       } catch (err) {
         res.status(500).json({ message: "server error" });
       }

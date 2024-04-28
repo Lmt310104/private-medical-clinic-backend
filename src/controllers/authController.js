@@ -22,7 +22,7 @@ const login = async (req, res, next) => {
         message: "You have successfully logged in",
       });
     });
-    console.log(req);
+    // console.log(req);
   })(req, res, next);
 };
 
@@ -37,7 +37,8 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
   if (req.isAuthenticated()) {
     const user = await db.users.findOne({ where: { id: req.user.user.id } });
     if (!user) {
-      res.status(401).json({ message: "User not found" });
+      res.status(401);
+      return res.json({ message: "User not found" });
     }
     console.log(user.refreshToken);
     console.log(req.user.refreshToken);
@@ -47,7 +48,8 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
       req.session.destroy();
       return res.status(401).json({ message: "Unauthorized" });
     }
-    res.status(200).json({ message: "You are logged in", user: req.user });
+    res.status(200);
+    res.json({ message: "You are logged in", user: req.user });
   }
 });
 const isFailureLogin = (req, res) => {

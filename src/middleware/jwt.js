@@ -6,7 +6,7 @@ export const generateAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_KEY_SECRET, { expiresIn: "15m" });
 };
 export const authenticateAccessToken = async (req, res, next) => {
-  console.log(req.isAuthenticated());
+  // console.log(req.isAuthenticated());
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized1" });
   }

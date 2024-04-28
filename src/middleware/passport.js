@@ -71,6 +71,7 @@ auth.use(
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },
         });
+        console.log(role);
         if (user && bcrypt.compare(user.dataValues.password, password)) {
           const userData = {
             username: user.dataValues.userName,
