@@ -6,6 +6,14 @@ const { Op } = require("sequelize");
 const getAllUser = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 38}});
+      if (!authorization.isAccess) { 
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      } 
       const users = await db.users.findAll({
         include: [
           {
@@ -46,6 +54,14 @@ const getAllUser = asyncHandler(async (req, res, next) => {
 const createUser = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 39}});
+      if (!authorization.isAccess) { 
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      } 
       const { userName, email, password, fullName, userGroupId } = req.body;
       if (!userName || !email || !password || !fullName || !userGroupId) {
         return res.status(400).json({
@@ -104,6 +120,14 @@ const createUser = asyncHandler(async (req, res, next) => {
 const getUserById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 38}});
+      if (!authorization.isAccess) { 
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      } 
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
@@ -130,6 +154,14 @@ const getUserById = asyncHandler(async (req, res, next) => {
 const updateUserById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 41}});
+      if (!authorization.isAccess) { 
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      } 
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
@@ -180,6 +212,14 @@ const updateUserById = asyncHandler(async (req, res, next) => {
 const deleteUserById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 40}});
+      if (!authorization.isAccess) { 
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      } 
       const id = req.params.id;
       if (!id) {
         return res.status(400).json({
