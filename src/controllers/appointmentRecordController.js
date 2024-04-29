@@ -4,11 +4,20 @@ import asyncHandler from "express-async-handler";
 const getAllAppointmentRecords = asyncHandler(async (req, res, next) => {
   try {
      if (req.isAuthenticated()) {
-      const patientId = req.query.patientId ?? "";
-      const appointmentListId = req.query.appointmentListId ?? "";
+      // const patientId = req.query.patientId ?? "";
+      // const appointmentListId = req.query.appointmentListId ?? "";
       // if (req.query.patientId) {
+        const  whereStatement={};
+        if(req.query.patientId){
+          whereStatement.patientId = req.query.patientId;
+        }
+
+        if(req.query.appointmentListId){
+          whereStatement.appointmentListId = req.query.appointmentListId;
+        }
+
         const appointmentRecord = await db.appointmentRecords.findAll({
-          where: { patientId: patientId,appointmentListId: appointmentListId },
+          where: whereStatement,
 
           include: [
             {
