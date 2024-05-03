@@ -12,6 +12,9 @@ module.exports = {
       featName: {
         type: Sequelize.STRING
       },
+      loadedElement: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

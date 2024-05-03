@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   feats.init({
     featName: DataTypes.STRING,
+    loadedElement: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'feats',
