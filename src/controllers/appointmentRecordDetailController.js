@@ -4,13 +4,14 @@ import asyncHandler from "express-async-handler";
 const getAllAppointmentRecordDetails = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const appointmentRecordId = req.query.appointmentRecordId ?? "";
+      const whereStatement = {};
+      if (req.query && req.query.appointmentRecordId) {
+        whereStatement.appointmentRecordId = req.query.appointmentRecordId;
+      }
 
       const appointmentRecordDetail = await db.appointmentRecordDetails.findAll(
         {
-          where: {
-            appointmentRecordId: appointmentRecordId,
-          },
+          where: { ...whereStatement },
         }
       );
       return res.status(200).json({
