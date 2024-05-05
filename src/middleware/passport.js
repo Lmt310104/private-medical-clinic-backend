@@ -39,7 +39,8 @@ auth.use(
           const accessToken = generateAccessToken(userData);
           const refreshToken = jwt.sign(
             userData,
-            process.env.REFRESH_KEY_SECRET
+            process.env.REFRESH_KEY_SECRET,
+            { expiresIn: "7d" }
           );
           await db.users.update(
             { refreshToken: refreshToken },
@@ -71,17 +72,20 @@ auth.use(
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },
         });
-        if (user && bcrypt.compare(user.dataValues.password, password)) {
+        if (
+          user &&
+          (await bcrypt.compare(password, user.dataValues.password))
+        ) {
           const userData = {
             username: user.dataValues.userName,
             email: user.dataValues.email,
-            fullName: user.dataValues.fullName,
             id: user.dataValues.id,
             role: role.dataValues.groupName,
           };
           const refreshToken = jwt.sign(
             userData,
-            process.env.REFRESH_KEY_SECRET
+            process.env.REFRESH_KEY_SECRET,
+            { expiresIn: "7d" }
           );
           await db.users.update(
             { refreshToken: refreshToken },

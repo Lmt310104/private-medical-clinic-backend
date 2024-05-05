@@ -1,6 +1,7 @@
 import db from "../models/index.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
+const { Op } = require("sequelize");
 
 const getAllUser = asyncHandler(async (req, res, next) => {
   try {
@@ -55,7 +56,7 @@ const createUser = asyncHandler(async (req, res, next) => {
       }
       //Checking for existing User
       const existingUser = await db.users.findOne({
-        where: { userName: userName },
+        where: [Op.or({ userName: userName }, { email: email })],
       });
       if (existingUser) {
         return res.status(400).json({
@@ -85,6 +86,12 @@ const createUser = asyncHandler(async (req, res, next) => {
           data: user,
         });
       }
+    } else {
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
     }
   } catch {
     res.status(500).json({
