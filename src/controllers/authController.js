@@ -44,7 +44,8 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
       req.session.destroy();
       return res.status(401).json({ message: "Unauthorized" });
     }
-    res.status(200).json({ message: "You are logged in", user: req.user });
+    res.status(200);
+    res.json({ message: "You are logged in", user: req.user });
   }
 });
 const isFailureLogin = (req, res) => {

@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   userGroup.init(
     {
       groupName: DataTypes.STRING,
+      note: DataTypes.STRING,
     },
     {
       sequelize,
