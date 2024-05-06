@@ -44,6 +44,8 @@ app.use(express.urlencoded({ extended: true }));
 //routes
 
 app.use("/api/v1/auth", require("./routes/authRouter"));
+app.use("/api/v1/authorizations", require("./routes/authorizationRouter"));
+app.use("/api/v1/usergroups", require("./routes/groupUserRouter"));
 app.use("/api/v1/drugs", require("./routes/drugRouter"));
 app.use("/api/v1/arguments", require("./routes/argumentRouter"));
 app.use("/api/v1/units", require("./routes/unitRouter"));
@@ -65,7 +67,7 @@ app.use(
   require("./routes/appointmentRecordDetailRouter")
 );
 app.use("/api/v1/bills", require("./routes/billRouter"));
-app.use("/api/v1/authorizations", require("./routes/authorizationRouter"));
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
