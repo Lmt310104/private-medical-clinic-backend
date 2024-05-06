@@ -56,7 +56,7 @@ const createUser = asyncHandler(async (req, res, next) => {
       }
       //Checking for existing User
       const existingUser = await db.users.findOne({
-        where: [Op.or({ userName: userName }, { email: email })],
+        where: { [Op.or]: ({ userName: userName }, { email: email }) },
       });
       if (existingUser) {
         return res.status(400).json({

@@ -1,23 +1,33 @@
 import db from "../models/index";
 import asyncHandler from "express-async-handler";
+import drugService from "../services/drug.service";
+import appointmentRecordDetailService from "../services/appointmentRecordDetails.service";
 
 const getAllAppointmentRecordDetails = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const appointmentRecordId = req.query.appointmentRecordId ?? "";
-
-      const appointmentRecordDetail = await db.appointmentRecordDetails.findAll(
-        {
-          where: {
-            appointmentRecordId: appointmentRecordId,
-          },
-        }
-      );
-      return res.status(200).json({
-        status: res.statusCode,
-        message: "All Appointment Record Details",
-        data: appointmentRecordDetail,
-      });
+      const appointmentRecordId = req.query.appointmentRecordId;
+      if (appointmentRecordId) {
+        const appointmentRecordDetail =
+          await db.appointmentRecordDetails.findAll({
+            where: {
+              appointmentRecordId: appointmentRecordId,
+            },
+          });
+        return res.status(200).json({
+          status: res.statusCode,
+          message: "All Appointment Record Details",
+          data: appointmentRecordDetail,
+        });
+      } else {
+        const appointmentRecordDetail =
+          await db.appointmentRecordDetails.findAll();
+        return res.status(200).json({
+          status: res.statusCode,
+          message: "All Appointment Record Details",
+          data: appointmentRecordDetail,
+        });
+      }
     } else {
       res.status(401).json({
         status: res.statusCode,
@@ -80,6 +90,17 @@ const createAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
     count: count,
     usageId: usageId,
   });
+  const reduceDrug = await drugService.reduceDrug({
+    drugId: drugId,
+    count: count,
+  });
+  if (!reduceDrug) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: "Not enough drug or not found drug",
+      data: "",
+    });
+  }
   return res.status(201).json({
     status: res.statusCode,
     message: "Appointment Record Detail Created",
@@ -99,6 +120,21 @@ const updateAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
+      const existAppointmentRecordDetail =
+        await appointmentRecordDetailService.findById({
+          id: appointmentRecordDetailId,
+        });
+      if (!existAppointmentRecordDetail) {
+        return res.status(404).json({
+          status: res.statusCode,
+          message: "Appointment Record Detail not found",
+          data: "",
+        });
+      }
+      const updateDrug = drugService.reduceDrug({
+        drugId: drugId,
+        count: count - existAppointmentRecordDetail.count,
+      });
       const appointmentRecordDetail = await db.appointmentRecordDetails.update(
         {
           appointmentRecordId: appointmentRecordId,
@@ -112,6 +148,7 @@ const updateAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
           },
         }
       );
+
       return res.status(201).json({
         status: res.statusCode,
         message: "Appointment Record Detail Updated",
