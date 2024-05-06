@@ -12,4 +12,6 @@ router
   .get(authenticateAccessToken, userController.getUserById)
   .put(authenticateAccessToken, userController.updateUserById)
   .delete(authenticateAccessToken, userController.deleteUserById);
+
+router.route("/send-info").post(userController.sendUserInfo);
 module.exports = router;

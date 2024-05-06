@@ -11,6 +11,7 @@ const login = async (req, res, next) => {
     if (err) {
       return next(err);
     }
+    console.log("this is how i log in", user);
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
@@ -18,6 +19,7 @@ const login = async (req, res, next) => {
       if (err) {
         return next(err);
       }
+
       res.status(200).json({
         status: res.statusCode,
         user: user,
@@ -44,7 +46,8 @@ const isSuccessLogin = asyncHandler(async (req, res) => {
       req.session.destroy();
       return res.status(401).json({ message: "Unauthorized" });
     }
-    res.status(200).json({ message: "You are logged in", user: req.user });
+    res.status(200);
+    res.json({ message: "You are logged in", user: req.user });
   }
 });
 const isFailureLogin = (req, res) => {

@@ -82,6 +82,7 @@ auth.use(
             id: user.dataValues.id,
             role: role.dataValues.groupName,
           };
+          console.log("this is userdata", userData);
           const refreshToken = jwt.sign(
             userData,
             process.env.REFRESH_KEY_SECRET,

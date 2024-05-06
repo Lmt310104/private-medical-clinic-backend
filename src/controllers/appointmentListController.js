@@ -6,14 +6,22 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
       try {
-        const appointmentList = await db.appointmentList.findAll({
-        });
+        // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+        // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 1}});
+        // if (!authorization.isAccess) {
+        //   return res.status(401).json({
+        //     status: res.statusCode,
+        //     message: "Unauthorized",
+        //   });
+        // }
+        const appointmentList = await db.appointmentList.findAll({});
         res.status(200).json({
           status: res.statusCode,
           success: "success",
           data: appointmentList,
         });
       } catch (err) {
+        console.log(err);
         res.status(500).json({
           status: res.statusCode,
           message: "server error",
@@ -39,6 +47,14 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
 const createAppointmentList = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 2}});
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const { scheduleDate } = req.body;
       if (!scheduleDate) {
         res.status(400).json({
@@ -88,6 +104,14 @@ const createAppointmentList = asyncHandler(async (req, res) => {
 const getAppointmentListById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 1}});
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const appointmentList = await db.appointmentList.findOne({
         where: { id: req.params.id },
       });

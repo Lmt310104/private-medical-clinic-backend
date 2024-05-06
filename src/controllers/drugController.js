@@ -5,13 +5,29 @@ const { Op } = require("sequelize");
 const getAllDrugs = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       try {
+        // const userGroup = await db.userGroup.findOne({
+        //   where: { groupName: req.user.user.role },
+        // });
+        // const authorization = await db.authorizations.findOne({
+        //   where: { userGroupId: userGroup.id, featId: 42 },
+        // });
+        // if (!authorization.isAccess) {
+        //   return res.status(401).json({
+        //     status: res.statusCode,
+        //     message: "Unauthorized",
+        //   });
+        // }
         const drugs = await db.drugs.findAll();
         console.log("this is 1");
         res.status(200).json({ drugs: drugs });
       } catch (err) {
         res.status(500).json({ message: err });
       }
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
+    }
     } else {
       res.status(401).json({ message: "Unauthorized" });
     }
@@ -25,6 +41,18 @@ const addDrug = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
       try {
+        // const userGroup = await db.userGroup.findOne({
+        //   where: { groupName: req.user.user.role },
+        // });
+        // const authorization = await db.authorizations.findOne({
+        //   where: { userGroupId: userGroup.id, featId: 43 },
+        // });
+        // if (!authorization.isAccess) {
+        //   return res.status(401).json({
+        //     status: res.statusCode,
+        //     message: "Unauthorized",
+        //   });
+        // }
         const existingDrug = await db.drugs.findOne({
           where: { drugName: drug.drugName },
         });
@@ -36,7 +64,6 @@ const addDrug = asyncHandler(async (req, res) => {
             price: drug.price,
             count: drug.count,
             unitId: drug.unitId,
-            note: drug.note,
           });
           res.status(200).json({ message: "Drug added successfully" });
         }
@@ -57,6 +84,18 @@ const getDrug = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
       try {
+        // const userGroup = await db.userGroup.findOne({
+        //   where: { groupName: req.user.user.role },
+        // });
+        // const authorization = await db.authorizations.findOne({
+        //   where: { userGroupId: userGroup.id, featId: 42 },
+        // });
+        // if (!authorization.isAccess) {
+        //   return res.status(401).json({
+        //     status: res.statusCode,
+        //     message: "Unauthorized",
+        //   });
+        // }
         const id = req.params.id;
         const drug = await db.drugs.findOne({ where: { id: id } });
         if (!drug) {
@@ -78,6 +117,18 @@ const updateDrug = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
       try {
+        // const userGroup = await db.userGroup.findOne({
+        //   where: { groupName: req.user.user.role },
+        // });
+        // const authorization = await db.authorizations.findOne({
+        //   where: { userGroupId: userGroup.id, featId: 45 },
+        // });
+        // if (!authorization.isAccess) {
+        //   return res.status(401).json({
+        //     status: res.statusCode,
+        //     message: "Unauthorized",
+        //   });
+        // }
         const id = req.params.id;
         const drug = req.body;
         const existingDrug = await db.drugs.findOne({ where: { id: id } });
@@ -90,7 +141,6 @@ const updateDrug = asyncHandler(async (req, res) => {
             price: drug.price,
             count: drug.count,
             unitId: drug.unitId,
-            note: drug.note,
           },
           { where: { id: id } }
         );
@@ -112,6 +162,18 @@ const deleteDrug = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
       try {
+        // const userGroup = await db.userGroup.findOne({
+        //   where: { groupName: req.user.user.role },
+        // });
+        // const authorization = await db.authorizations.findOne({
+        //   where: { userGroupId: userGroup.id, featId: 44 },
+        // });
+        // if (!authorization.isAccess) {
+        //   return res.status(401).json({
+        //     status: res.statusCode,
+        //     message: "Unauthorized",
+        //   });
+        // }
         const id = req.params.id;
         const drug = await db.drugs.findOne({ where: { id: id } });
         if (!drug) {
