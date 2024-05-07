@@ -18,6 +18,7 @@ router
     authenticateAccessToken,
     appointmentRecordController.getAppointmentRecordById
   )
+
   .put(
     authenticateAccessToken,
     appointmentRecordController.updateAppointmentRecordById
@@ -26,5 +27,7 @@ router
     authenticateAccessToken,
     appointmentRecordController.deleteAppointmentRecordById
   );
-
+router
+  .route("/patients/:id")
+  .get(appointmentRecordController.findAllAppointmentRecordByPatientId);
 module.exports = router;

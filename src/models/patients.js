@@ -26,6 +26,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "patients",
+    },
+    {
+      hooks: {
+        beforeCreate: (patient, options) => {
+          patient.id = "Patient" + uuid.v4();
+        },
+      },
     }
   );
   return patients;
