@@ -5,7 +5,9 @@ import { findRecordById } from "../services/appointmentListRecord.service.js";
 const getAllAppointmentRecords = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      if (req.query.patientId) {
+      // const patientId = req.query.patientId ?? "";
+      // const appointmentListId = req.query.appointmentListId ?? "";
+      // if (req.query.patientId) {
         const userGroup = await db.userGroup.findOne({
           where: { groupName: req.user.user.role },
         });
@@ -18,8 +20,17 @@ const getAllAppointmentRecords = asyncHandler(async (req, res, next) => {
             message: "Unauthorized",
           });
         }
+        const  whereStatement={};
+        if(req.query.patientId){
+          whereStatement.patientId = req.query.patientId;
+        }
+
+        if(req.query.appointmentListId){
+          whereStatement.appointmentListId = req.query.appointmentListId;
+        }
+
         const appointmentRecord = await db.appointmentRecords.findAll({
-          where: { patientId: req.query.patientId },
+          where: whereStatement,
 
           include: [
             {

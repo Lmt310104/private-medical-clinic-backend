@@ -1,6 +1,6 @@
 import db from "../models/index";
 import asyncHandler from "express-async-handler";
-import sequelize from "sequelize";
+import sequelize, { where } from "sequelize";
 const getAllAppointmentList = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
@@ -17,7 +17,17 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
             message: "Unauthorized",
           });
         }
+        const whereStatement = {};
+        if (req.query && req.query?.patientId) {
+          whereStatement.patientId = req.query.patientId;
+        }
+
+        if (req.query && req.query?.appointmentListId) {
+          whereStatement.appointmentListId = req.query.appointmentListId;
+        }
+
         const appointmentList = await db.appointmentListPatient.findAll({
+          where: { ...whereStatement },
           attributes: {
             include: [
               [

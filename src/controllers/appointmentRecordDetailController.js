@@ -18,12 +18,15 @@ const getAllAppointmentRecordDetails = asyncHandler(async (req, res, next) => {
           message: "Unauthorized",
         });
       }
-      const appointmentRecordId = req.query.appointmentRecordId;
+      const whereStatement = {};
+      if (req.query && req.query.appointmentRecordId) {
+        whereStatement.appointmentRecordId = req.query.appointmentRecordId;
+      }
       if (appointmentRecordId) {
         const appointmentRecordDetail =
           await db.appointmentRecordDetails.findAll({
             where: {
-              appointmentRecordId: appointmentRecordId,
+              ...whereStatement,
             },
           });
         return res.status(200).json({

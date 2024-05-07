@@ -31,8 +31,12 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
           message: "Unauthorized",
         });
       }
-
+      const whereStatement = {};
+      if (req.query && req.query?.phoneNumber) {
+        whereStatement.phoneNumber = req.query.phoneNumber;
+      }
       const patients = await db.patients.findAll({
+        where: { ...whereStatement },
         order: [["fullName", "ASC"]],
       });
       const patientsSortByLastName = patients.map((patient) => {
@@ -75,6 +79,17 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
 const createPatient = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const { fullName, gender, birthYear, address, phoneNumber } = req.body;
+      if (!fullName || !gender || !birthYear || !address || !phoneNumber) {
+        res.status(400).json({
+          status: res.statusCode,
+          message: "All fields are required",
+          data: "",
+        });
+      }
+      const existingPatient = await db.patients.findOne({
+        where: { phoneNumber },
+      });
       const userGroup = await db.userGroup.findOne({
         where: { groupName: req.user.user.role },
       });
@@ -113,6 +128,34 @@ const createPatient = asyncHandler(async (req, res, next) => {
           address,
           phoneNumber,
         });
+        if (patient) {
+          res.status(201).json({
+            status: res.statusCode,
+            message: "Patient created",
+            data: patient,
+          });
+        } else {
+          res.status(400).json({
+            status: res.statusCode,
+            message: "Patient not created",
+            data: "",
+          });
+        }
+      }
+      if (existingPatient) {
+        res.status(200).json({
+          status: res.statusCode,
+          message: "Patient already exists",
+          data: existingPatient,
+        });
+      } else {
+        const patient = await db.patients.create({
+          fullName,
+          gender,
+          birthYear,
+          address,
+          phoneNumber,
+        });
 
         if (patient) {
           res.status(201).json({
@@ -134,6 +177,11 @@ const createPatient = asyncHandler(async (req, res, next) => {
         message: "Unauthorized",
         data: "",
       });
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
     }
   } catch (err) {
     res.status(500).json({
@@ -146,6 +194,21 @@ const createPatient = asyncHandler(async (req, res, next) => {
 const getPatientById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const patient = await db.patients.findOne({
+        where: { id: req.params.id },
+      });
+      if (!patient) {
+        res.status(404).json({
+          status: res.statusCode,
+          message: "Patient not found",
+          data: "",
+        });
+      }
+      res.status(200).json({
+        status: res.statusCode,
+        message: "Patient found",
+        data: patient,
+      });
       const userGroup = await db.userGroup.findOne({
         where: { groupName: req.user.user.role },
       });
@@ -185,6 +248,19 @@ const getPatientById = asyncHandler(async (req, res, next) => {
 const updatePatientById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const { fullName, gender, birthYear, address, phoneNumber } = req.body;
+      const patient = await db.patients.update(
+        {
+          fullName: fullName,
+          gender: gender,
+          birthYear: birthYear,
+          address: address,
+          phoneNumber: phoneNumber,
+        },
+        {
+          where: { id: req.params.id },
+        }
+      );
       const userGroup = await db.userGroup.findOne({
         where: { groupName: req.user.user.role },
       });
@@ -233,6 +309,11 @@ const updatePatientById = asyncHandler(async (req, res, next) => {
         message: "Unauthorized",
         data: "",
       });
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
     }
   } catch (err) {
     res.status(500).json({
@@ -245,6 +326,21 @@ const updatePatientById = asyncHandler(async (req, res, next) => {
 const deletePatientById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      const patient = await db.patients.destroy({
+        where: { id: req.params.id },
+      });
+      if (!patient) {
+        res.status(404).json({
+          status: res.statusCode,
+          message: "Patient not found",
+          data: "",
+        });
+      }
+      res.status(200).json({
+        status: res.statusCode,
+        message: "Patient deleted",
+        data: "",
+      });
       const userGroup = await db.userGroup.findOne({
         where: { groupName: req.user.user.role },
       });
@@ -304,6 +400,11 @@ const deletePatientById = asyncHandler(async (req, res, next) => {
         data: "",
       });
     } else {
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
       res.status(401).json({
         status: res.statusCode,
         message: "Unauthorized",
