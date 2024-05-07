@@ -14,4 +14,6 @@ router
   .delete(authenticateAccessToken, userController.deleteUserById);
 
 router.route("/send-info").post(userController.sendUserInfo);
+router.route("/send-info-by-id").post(userController.sendUserInfoByUserId);
+
 module.exports = router;

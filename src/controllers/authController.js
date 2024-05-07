@@ -288,6 +288,37 @@ const checkOTPByEmail = asyncHandler(async (req, res, next) => {
     });
   }
 });
+const resetPasswordById = asyncHandler(async (req, res, next) => {
+  try {
+    const id = req.body.id;
+    const newPassword = req.body.newPassword;
+    const confirmPassword = req.body.confirmPassword;
+    const updateStatus = await userService.resetPasswordById({
+      id: id,
+      newPassword: newPassword,
+      confirmPassword: confirmPassword,
+    });
+    if (!updateStatus) {
+      return res.status(400).json({
+        status: res.statusCode,
+        message: "Something wrong",
+        data: "",
+      });
+    }
+    res.status(200).json({
+      status: res.statusCode,
+      message: "success reset password",
+      data: updateStatus,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: "server error",
+      error: err.stack,
+      data: "",
+    });
+  }
+});
 export default {
   login,
   isLoggedIn,
@@ -300,4 +331,5 @@ export default {
   sendOTP,
   resetPassword,
   checkOTPByEmail,
+  resetPasswordById,
 };

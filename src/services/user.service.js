@@ -51,5 +51,23 @@ class userService {
     }
     return false;
   }
+  static async resetPasswordById({ id, newPassword, confirmPassword }) {
+    if (newPassword !== confirmPassword) {
+      return false;
+    }
+
+    const hashedPassword = await bcrypt.hashSync(newPassword, 10);
+    console.log(newPassword);
+    console.log(hashedPassword);
+    console.log(id);
+    const resetStatus = await model.users.update(
+      { password: hashedPassword },
+      { where: { id: id } }
+    );
+    if (resetStatus[0]) {
+      return true;
+    }
+    return false;
+  }
 }
 module.exports = userService;
