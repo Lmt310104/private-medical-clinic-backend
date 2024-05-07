@@ -44,6 +44,7 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
               ],
             ],
           },
+          order: [["createdAt", "DESC"]],
         });
 
         res.status(200).json({
@@ -76,14 +77,18 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
 const createAppointmentListPatient = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 4}});
-      if (!authorization.isAccess) { 
+      const userGroup = await db.userGroup.findOne({
+        where: { groupName: req.user.user.role },
+      });
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: userGroup.id, featId: 4 },
+      });
+      if (!authorization.isAccess) {
         return res.status(401).json({
           status: res.statusCode,
           message: "Unauthorized",
         });
-      } 
+      }
       const { patientId, appointmentListId } = req.body;
       if (!patientId || !appointmentListId) {
         res.status(400).json({
@@ -113,14 +118,18 @@ const createAppointmentListPatient = asyncHandler(async (req, res) => {
 const updateAppointmentListPatient = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 5}});
-      if (!authorization.isAccess) { 
+      const userGroup = await db.userGroup.findOne({
+        where: { groupName: req.user.user.role },
+      });
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: userGroup.id, featId: 5 },
+      });
+      if (!authorization.isAccess) {
         return res.status(401).json({
           status: res.statusCode,
           message: "Unauthorized",
         });
-      } 
+      }
       const { patientId, appointmentListId } = req.body;
       if (!patientId || !appointmentListId) {
         res.status(400).json({
@@ -159,14 +168,18 @@ const updateAppointmentListPatient = asyncHandler(async (req, res) => {
 const deleteAppointmentListPatient = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 6}});
-      if (!authorization.isAccess) { 
+      const userGroup = await db.userGroup.findOne({
+        where: { groupName: req.user.user.role },
+      });
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: userGroup.id, featId: 6 },
+      });
+      if (!authorization.isAccess) {
         return res.status(401).json({
           status: res.statusCode,
           message: "Unauthorized",
         });
-      } 
+      }
       const appointmentListPatient = await db.appointmentListPatient.destroy({
         where: { id: req.params.id },
       });
@@ -193,14 +206,18 @@ const deleteAppointmentListPatient = asyncHandler(async (req, res) => {
 const getAppointmentListPatientById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 3}});
-      if (!authorization.isAccess) { 
+      const userGroup = await db.userGroup.findOne({
+        where: { groupName: req.user.user.role },
+      });
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: userGroup.id, featId: 3 },
+      });
+      if (!authorization.isAccess) {
         return res.status(401).json({
           status: res.statusCode,
           message: "Unauthorized",
         });
-      } 
+      }
       const appointmentList = await db.appointmentListPatient.findOne({
         where: { id: req.params.id },
         include: [

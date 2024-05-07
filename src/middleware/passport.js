@@ -69,6 +69,7 @@ auth.use(
       try {
         const user = await db.users.findOne({ where: { userName: username } });
         console.log(user);
+
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },
         });
