@@ -22,27 +22,20 @@ const getAllAppointmentRecordDetails = asyncHandler(async (req, res, next) => {
       if (req.query && req.query.appointmentRecordId) {
         whereStatement.appointmentRecordId = req.query.appointmentRecordId;
       }
-      if (appointmentRecordId) {
-        const appointmentRecordDetail =
-          await db.appointmentRecordDetails.findAll({
-            where: {
-              ...whereStatement,
-            },
-          });
-        return res.status(200).json({
-          status: res.statusCode,
-          message: "All Appointment Record Details",
-          data: appointmentRecordDetail,
-        });
-      } else {
-        const appointmentRecordDetail =
-          await db.appointmentRecordDetails.findAll();
-        return res.status(200).json({
-          status: res.statusCode,
-          message: "All Appointment Record Details",
-          data: appointmentRecordDetail,
-        });
-      }
+      console.log(whereStatement);
+
+      const appointmentRecordDetail = await db.appointmentRecordDetails.findAll(
+        {
+          where: {
+            ...whereStatement,
+          },
+        }
+      );
+      return res.status(200).json({
+        status: res.statusCode,
+        message: "All Appointment Record Details",
+        data: appointmentRecordDetail,
+      });
     } else {
       res.status(401).json({
         status: res.statusCode,
