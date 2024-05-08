@@ -154,11 +154,6 @@ const createPatient = asyncHandler(async (req, res, next) => {
 const getPatientById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      res.status(200).json({
-        status: res.statusCode,
-        message: "Patient found",
-        data: patient,
-      });
       const userGroup = await db.userGroup.findOne({
         where: { groupName: req.user.user.role },
       });
