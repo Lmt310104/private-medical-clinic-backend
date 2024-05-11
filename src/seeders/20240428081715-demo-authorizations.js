@@ -242,6 +242,21 @@ module.exports = {
           isAccess: true,
         },
         {
+          userGroupId: 1,
+          featId: 48,
+          isAccess: true,
+        },
+        {
+          userGroupId: 1,
+          featId: 49,
+          isAccess: true,
+        },
+        {
+          userGroupId: 1,
+          featId: 50,
+          isAccess: true,
+        },
+        {
           userGroupId: 2,
           featId: 1,
           isAccess: true,
@@ -477,6 +492,21 @@ module.exports = {
           isAccess: false,
         },
         {
+          userGroupId: 2,
+          featId: 48,
+          isAccess: false,
+        },
+        {
+          userGroupId: 2,
+          featId: 49,
+          isAccess: false,
+        },
+        {
+          userGroupId: 2,
+          featId: 50,
+          isAccess: false,
+        },
+        {
           userGroupId: 3,
           featId: 1,
           isAccess: true,
@@ -712,6 +742,21 @@ module.exports = {
           isAccess: false,
         },
         {
+          userGroupId: 3,
+          featId: 48,
+          isAccess: false,
+        },
+        {
+          userGroupId: 3,
+          featId: 49,
+          isAccess: false,
+        },
+        {
+          userGroupId: 3,
+          featId: 50,
+          isAccess: false,
+        },
+        {
           userGroupId: 4,
           featId: 1,
           isAccess: true,
@@ -944,6 +989,21 @@ module.exports = {
         {
           userGroupId: 4,
           featId: 47,
+          isAccess: false,
+        },
+        {
+          userGroupId: 4,
+          featId: 48,
+          isAccess: false,
+        },
+        {
+          userGroupId: 4,
+          featId: 49,
+          isAccess: false,
+        },
+        {
+          userGroupId: 4,
+          featId: 50,
           isAccess: false,
         },
       ],

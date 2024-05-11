@@ -11,7 +11,6 @@ const login = async (req, res, next) => {
     if (err) {
       return next(err);
     }
-    console.log("this is how i log in", user);
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }

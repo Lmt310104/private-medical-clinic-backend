@@ -20,7 +20,6 @@ const getAllDrugs = asyncHandler(async (req, res) => {
         //   });
         // }
         const drugs = await db.drugs.findAll();
-        console.log("this is 1");
         res.status(200).json({ drugs: drugs });
       } catch (err) {
         res.status(500).json({ message: err });

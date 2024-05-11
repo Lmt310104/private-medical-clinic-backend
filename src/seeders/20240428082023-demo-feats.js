@@ -147,6 +147,15 @@ module.exports = {
         {
           featName: "updateAuthorization",
         },
+        {
+          featName: "addUserGroup",
+        },
+        {
+          featName: "deleteUserGroup",
+        },
+        {
+          featName: "updateUserGroup",
+        },
       ],
       {}
     );

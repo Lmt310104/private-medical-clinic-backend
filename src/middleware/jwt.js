@@ -35,6 +35,7 @@ export const authenticateAccessToken = async (req, res, next) => {
       return res.status(403).json({ message: "Unauthorized4" });
     }
     try {
+      console.log("this is user verify", req.user);
       jwt.verify(req.user.refreshToken, process.env.REFRESH_KEY_SECRET);
       const accessToken = generateAccessToken(req.user.user);
       req.user.accessToken = accessToken;

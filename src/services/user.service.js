@@ -51,6 +51,7 @@ class userService {
     }
     return false;
   }
+  
   static async resetPasswordById({ id, newPassword, confirmPassword }) {
     if (newPassword !== confirmPassword) {
       return false;
