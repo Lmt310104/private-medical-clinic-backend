@@ -241,6 +241,15 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          featName: "addUserGroup",
+        },
+        {
+          featName: "deleteUserGroup",
+        },
+        {
+          featName: "updateUserGroup",
+        },
       ],
       {}
     );

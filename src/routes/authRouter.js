@@ -20,4 +20,5 @@ router.route("/reset-password/send-otp").post(authController.sendOTP);
 router.route("/check-email").post(authController.checkEmail);
 router.route("/check-otp").post(authController.checkOTPByEmail);
 router.route("/reset-password").post(authController.resetPassword);
+router.route("/reset-password-by-id").post(authController.resetPasswordById);
 module.exports = router;

@@ -4,18 +4,18 @@ import asyncHandler from "express-async-handler";
 const getMaxNumOfPatients = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({
-        where: { groupName: req.user.user.role },
-      });
-      const authorization = await db.authorizations.findOne({
-        where: { userGroupId: userGroup.id, featId: 15 },
-      });
-      if (!authorization.isAccess) {
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      }
+      // const userGroup = await db.userGroup.findOne({
+      //   where: { groupName: req.user.user.role },
+      // });
+      // const authorization = await db.authorizations.findOne({
+      //   where: { userGroupId: userGroup.id, featId: 15 },
+      // });
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const argument = await db.arguments.findAll();
       if (!argument) {
         res.status(404).json({ message: "Max number of patients not found" });
@@ -34,14 +34,14 @@ const getMaxNumOfPatients = asyncHandler(async (req, res, next) => {
 const updateMaxNumOfPatients = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 16}});
-      if (!authorization.isAccess) { 
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      } 
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 16}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const { maxNumberOfPatients } = req.body;
       if (!maxNumberOfPatients) {
         res.status(400).json({ message: "Max number of patients is required" });
@@ -69,14 +69,14 @@ const updateMaxNumOfPatients = asyncHandler(async (req, res, next) => {
 const getFeeConsult = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 15}});
-      if (!authorization.isAccess) { 
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      } 
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 15}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const argument = await db.arguments.findAll();
       if (!argument) {
         res.status(404).json({ message: "Fee consult not found" });
@@ -92,14 +92,14 @@ const getFeeConsult = asyncHandler(async (req, res, next) => {
 const updateFeeConsult = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 16}});
-      if (!authorization.isAccess) { 
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      } 
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 16}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const { feeConsult } = req.body;
       if (!feeConsult) {
         res.status(400).json({ message: "Fee consult is required" });

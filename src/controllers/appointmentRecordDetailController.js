@@ -6,23 +6,18 @@ import appointmentRecordDetailService from "../services/appointmentRecordDetails
 const getAllAppointmentRecordDetails = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({
-        where: { groupName: req.user.user.role },
-      });
-      const authorization = await db.authorizations.findOne({
-        where: { userGroupId: userGroup.id, featId: 11 },
-      });
-      if (!authorization.isAccess) {
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      }
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 11}});
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const whereStatement = {};
       if (req.query && req.query.appointmentRecordId) {
         whereStatement.appointmentRecordId = req.query.appointmentRecordId;
       }
-      console.log(whereStatement);
 
       const appointmentRecordDetail = await db.appointmentRecordDetails.findAll(
         {
@@ -54,18 +49,14 @@ const getAllAppointmentRecordDetails = asyncHandler(async (req, res, next) => {
 const getAppointmentRecordDetailById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({
-        where: { groupName: req.user.user.role },
-      });
-      const authorization = await db.authorizations.findOne({
-        where: { userGroupId: userGroup.id, featId: 11 },
-      });
-      if (!authorization.isAccess) {
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      }
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 11}});
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const appointmentRecordDetailId = req.params.id;
       const appointmentRecordDetail = await db.appointmentRecordDetails.findOne(
         {
@@ -95,18 +86,14 @@ const getAppointmentRecordDetailById = asyncHandler(async (req, res, next) => {
   }
 });
 const createAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
-  const userGroup = await db.userGroup.findOne({
-    where: { groupName: req.user.user.role },
-  });
-  const authorization = await db.authorizations.findOne({
-    where: { userGroupId: userGroup.id, featId: 12 },
-  });
-  if (!authorization.isAccess) {
-    return res.status(401).json({
-      status: res.statusCode,
-      message: "Unauthorized",
-    });
-  }
+  // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+  //     const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 12}});
+  //     if (!authorization.isAccess) {
+  //       return res.status(401).json({
+  //         status: res.statusCode,
+  //         message: "Unauthorized",
+  //       });
+  //     }
   const { appointmentRecordId, drugId, count, usageId } = req.body;
   if (!appointmentRecordId || !drugId || !count || !usageId) {
     return res.status(400).json({
@@ -143,18 +130,14 @@ const createAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
 const updateAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({
-        where: { groupName: req.user.user.role },
-      });
-      const authorization = await db.authorizations.findOne({
-        where: { userGroupId: userGroup.id, featId: 14 },
-      });
-      if (!authorization.isAccess) {
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      }
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 14}});
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const appointmentRecordDetailId = req.params.id;
       const { appointmentRecordId, drugId, count, usageId } = req.body;
       if (!appointmentRecordId || !drugId || !count || !usageId) {
@@ -216,18 +199,14 @@ const updateAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
 const deleteAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const userGroup = await db.userGroup.findOne({
-        where: { groupName: req.user.user.role },
-      });
-      const authorization = await db.authorizations.findOne({
-        where: { userGroupId: userGroup.id, featId: 13 },
-      });
-      if (!authorization.isAccess) {
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      }
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 13}});
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const appointmentRecordDetailId = req.params.id;
       const appointmentRecordDetail = await db.appointmentRecordDetails.destroy(
         {
