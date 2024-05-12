@@ -19,7 +19,9 @@ const getAllDrugs = asyncHandler(async (req, res) => {
           //     message: "Unauthorized",
           //   });
           // }
-          const drugs = await db.drugs.findAll();
+          const drugs = await db.drugs.findAll({
+            where: { isActive: 1 },
+          });
           res.status(200).json({ drugs: drugs });
         } catch (err) {
           res.status(500).json({ message: err });
@@ -96,7 +98,7 @@ const getDrug = asyncHandler(async (req, res) => {
         //   });
         // }
         const id = req.params.id;
-        const drug = await db.drugs.findOne({ where: { id: id } });
+        const drug = await db.drugs.findOne({ where: { id: id, isActive: 1 } });
         if (!drug) {
           return res.status(404).json({ message: "Drug not found" });
         }
@@ -178,7 +180,7 @@ const deleteDrug = asyncHandler(async (req, res) => {
         if (!drug) {
           return res.status(404).json({ message: "Drug not found" });
         }
-        await db.drugs.destroy({ where: { id: id } });
+        await db.drugs.update({ isActive: 0 }, { where: { id: id } });
         res.status(200).json({ message: "Drug deleted successfully" });
       } catch (err) {
         res.status(500).json({ message: "server error" });

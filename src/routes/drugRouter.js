@@ -1,5 +1,4 @@
 const router = require("express").Router();
-import { Model } from "sequelize";
 import drugController from "../controllers/drugController";
 import { authenticateAccessToken } from "../middleware/jwt";
 

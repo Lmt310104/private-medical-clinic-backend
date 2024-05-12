@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class drugs extends Model {
     /**
@@ -13,15 +11,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  drugs.init({
-    drugName: DataTypes.STRING,
-    price: DataTypes.BIGINT,
-    count: DataTypes.INTEGER,
-    unitId: DataTypes.INTEGER,
-    note: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'drugs',
-  });
+  drugs.init(
+    {
+      drugName: DataTypes.STRING,
+      price: DataTypes.BIGINT,
+      count: DataTypes.INTEGER,
+      unitId: DataTypes.INTEGER,
+      note: DataTypes.STRING,
+      isActive: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "drugs",
+    }
+  );
   return drugs;
 };

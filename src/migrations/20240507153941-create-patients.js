@@ -24,6 +24,10 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.STRING,
       },
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

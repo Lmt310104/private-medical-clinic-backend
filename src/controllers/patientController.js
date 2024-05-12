@@ -36,7 +36,7 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
         whereStatement.phoneNumber = req.query.phoneNumber;
       }
       const patients = await db.patients.findAll({
-        where: { ...whereStatement },
+        where: { ...whereStatement, isActive: 1 },
         order: [["fullName", "ASC"]],
       });
       const patientsSortByLastName = patients.map((patient) => {
@@ -163,7 +163,7 @@ const getPatientById = asyncHandler(async (req, res, next) => {
       //   });
       // }
       const patient = await db.patients.findOne({
-        where: { id: req.params.id },
+        where: { id: req.params.id, isActive: 1 },
       });
       if (!patient) {
         res.status(404).json({
@@ -271,30 +271,33 @@ const deletePatientById = asyncHandler(async (req, res, next) => {
         });
       }
 
-      const bills = await db.bills.destroy({
-        where: { patientId: req.params.id },
-      });
-      const appointmentRecords = await db.appointmentRecords.findAll({
-        where: { patientId: req.params.id },
-      });
-      await Promise.all(
-        appointmentRecords.map(async (record) => {
-          await db.appointmentRecordDetails.destroy({
-            where: { appointmentRecordId: record.id },
-          });
-          await db.appointmentRecords.destroy({
-            where: { id: record.id },
-          });
-        })
+      // const bills = await db.bills.destroy({
+      //   where: { patientId: req.params.id },
+      // });
+      // const appointmentRecords = await db.appointmentRecords.findAll({
+      //   where: { patientId: req.params.id },
+      // });
+      // await Promise.all(
+      //   appointmentRecords.map(async (record) => {
+      //     await db.appointmentRecordDetails.destroy({
+      //       where: { appointmentRecordId: record.id },
+      //     });
+      //     await db.appointmentRecords.destroy({
+      //       where: { id: record.id },
+      //     });
+      //   })
+      // );
+
+      // const appointmentlistPatients = await db.appointmentListPatient.destroy({
+      //   where: { patientId: req.params.id },
+      // });
+
+      const patient = await db.patients.update(
+        { isActive: 0 },
+        {
+          where: { id: req.params.id },
+        }
       );
-
-      const appointmentlistPatients = await db.appointmentListPatient.destroy({
-        where: { patientId: req.params.id },
-      });
-
-      const patient = await db.patients.destroy({
-        where: { id: req.params.id },
-      });
 
       if (!patient) {
         res.status(404).json({

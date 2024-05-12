@@ -69,7 +69,7 @@ app.use(
 app.use("/api/v1/bills", require("./routes/billRouter"));
 app.use("/api/v1/patients", require("./routes/patientRouter"));
 app.use("/api/v1/features", require("./routes/featureRouter"));
-
+app.use("/api/v1/drugusagereports", require("./routes/drugUsageReport.router"));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -2,37 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("drugUsageReports", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userName: {
-        type: Sequelize.STRING,
-      },
-      fullName: {
-        type: Sequelize.STRING,
-      },
-      email: {
-        type: Sequelize.STRING,
-      },
-      password: {
-        type: Sequelize.STRING,
-      },
-      userGroupId: {
+      drugId: {
         type: Sequelize.INTEGER,
       },
-      refreshToken: {
-        type: Sequelize.TEXT,
+      count: {
+        type: Sequelize.INTEGER,
       },
-      code: {
-        type: Sequelize.STRING,
+      month: {
+        type: Sequelize.INTEGER,
       },
-      isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
+      year: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -45,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("drugUsageReports");
   },
 };

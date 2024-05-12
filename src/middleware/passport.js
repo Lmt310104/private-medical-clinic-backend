@@ -90,12 +90,11 @@ auth.use(
             ],
           },
         });
-
         const permission = authorizationData.map((auth) => {
           return auth.dataValues.loadedElement;
         });
 
-        const nonNullPermission = permission.filter(auth=> auth!==null);
+        const nonNullPermission = permission.filter((auth) => auth !== null);
 
         if (
           user &&
