@@ -19,9 +19,7 @@ const getAllDrugs = asyncHandler(async (req, res) => {
           //     message: "Unauthorized",
           //   });
           // }
-          const drugs = await db.drugs.findAll({
-            where: { isActive: 1 },
-          });
+          const drugs = await db.drugs.findAll();
           res.status(200).json({ drugs: drugs });
         } catch (err) {
           res.status(500).json({ message: err });
@@ -65,6 +63,8 @@ const addDrug = asyncHandler(async (req, res) => {
             price: drug.price,
             count: drug.count,
             unitId: drug.unitId,
+            isActive: 1,
+            note: drug.note
           });
           res.status(200).json({ message: "Drug added successfully" });
         }
@@ -98,7 +98,7 @@ const getDrug = asyncHandler(async (req, res) => {
         //   });
         // }
         const id = req.params.id;
-        const drug = await db.drugs.findOne({ where: { id: id, isActive: 1 } });
+        const drug = await db.drugs.findOne({ where: { id: id } });
         if (!drug) {
           return res.status(404).json({ message: "Drug not found" });
         }
@@ -142,6 +142,7 @@ const updateDrug = asyncHandler(async (req, res) => {
             price: drug.price,
             count: drug.count,
             unitId: drug.unitId,
+            note: drug.note
           },
           { where: { id: id } }
         );
@@ -180,7 +181,9 @@ const deleteDrug = asyncHandler(async (req, res) => {
         if (!drug) {
           return res.status(404).json({ message: "Drug not found" });
         }
-        await db.drugs.update({ isActive: 0 }, { where: { id: id } });
+        if (drug.isActive === 1)
+          await db.drugs.update({ isActive: 0 }, { where: { id: id } });
+        else await db.drugs.update({ isActive: 1 }, { where: { id: id } });
         res.status(200).json({ message: "Drug deleted successfully" });
       } catch (err) {
         res.status(500).json({ message: "server error" });

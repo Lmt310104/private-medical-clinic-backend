@@ -6,7 +6,7 @@ router.route("/google").get(auth.authenticate("google"));
 router.route("/oauth2/redirect/google").get(
   auth.authenticate("google", {
     successRedirect: "http://localhost:3000/login/success",
-    failureRedirect: "http://localhost:3000/login/fail",
+    failureRedirect: "http://localhost:3000/",
   })
 );
 router.route("/login").post(authController.login);
