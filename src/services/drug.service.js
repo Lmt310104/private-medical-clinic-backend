@@ -16,5 +16,18 @@ class drugService {
       { where: { id: drugId } }
     );
   }
+  static async findDrugById({ id }) {
+    return await model.drugs.findOne({ where: { id } });
+  }
+  static async updateStatusById({ id, status }) {
+    return await model.drugs.update(
+      { status: !status },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+  }
 }
 module.exports = drugService;
