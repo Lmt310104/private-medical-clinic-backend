@@ -7,10 +7,11 @@ const db = require("../models/index");
 import jwt, { verify } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 require("dotenv").config();
+import sequelize from "sequelize";
 
 const auth = new passport.Passport();
 
-//sign in with google
+// sign in with google
 auth.use(
   new GoogleStategy(
     {
@@ -25,16 +26,42 @@ auth.use(
       console.log(profile.emails[0].value);
       try {
         const user = await db.users.findOne({
-          include: [{ model: db.userGroup, as: "userGroup" }],
           where: { email: profile.emails[0].value },
         });
         if (user) {
+          const role = await db.userGroup.findOne({
+            where: { id: user.dataValues.userGroupId },
+          });
+          const authorizationData = await db.authorizations.findAll({
+            where: { userGroupId: user.dataValues.userGroupId, isAccess: 1 },
+            attributes: {
+              include: [
+                [
+                  sequelize.literal(`(
+                              SELECT loadedElement
+                              FROM feats AS feat
+                              WHERE
+                                feat.id = authorizations.featId
+                            )`),
+                  "loadedElement",
+                ],
+              ],
+            },
+          });
+          const permission = authorizationData.map((auth) => {
+            return auth.dataValues.loadedElement;
+          });
+
+          const nonNullPermission = permission.filter((auth) => auth !== null);
+
           const userData = {
             username: user.dataValues.userName,
             email: user.dataValues.email,
             fullName: user.dataValues.fullName,
             id: user.dataValues.id,
-            role: user.dataValues.userGroup.dataValues.groupName,
+            role: role.dataValues.groupName,
+            roleId: user.dataValues.userGroupId,
+            permission: nonNullPermission,
           };
           const accessToken = generateAccessToken(userData);
           const refreshToken = jwt.sign(
@@ -69,9 +96,32 @@ auth.use(
       try {
         const user = await db.users.findOne({ where: { userName: username } });
         console.log(user);
+
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },
         });
+        const authorizationData = await db.authorizations.findAll({
+          where: { userGroupId: user.dataValues.userGroupId, isAccess: 1 },
+          attributes: {
+            include: [
+              [
+                sequelize.literal(`(
+                            SELECT loadedElement
+                            FROM feats AS feat
+                            WHERE
+                              feat.id = authorizations.featId
+                          )`),
+                "loadedElement",
+              ],
+            ],
+          },
+        });
+        const permission = authorizationData.map((auth) => {
+          return auth.dataValues.loadedElement;
+        });
+
+        const nonNullPermission = permission.filter((auth) => auth !== null);
+
         if (
           user &&
           (await bcrypt.compare(password, user.dataValues.password))
@@ -81,6 +131,8 @@ auth.use(
             email: user.dataValues.email,
             id: user.dataValues.id,
             role: role.dataValues.groupName,
+            roleId: user.dataValues.userGroupId,
+            permission: nonNullPermission,
           };
           const refreshToken = jwt.sign(
             userData,

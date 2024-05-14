@@ -1,125 +1,82 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
+const featNames = [
+  "Xem lịch khám",
+  "Tạo lịch khám",
+  "Cập nhật lịch khám",
+  "Xóa lịch khám",
+  "Tiếp nhận ca khám",
+  "Thanh toán",
+  "Xem bệnh nhân",
+  "Tạo bệnh nhân",
+  "Cập nhật thông tin bệnh nhân",
+  "Xem phiếu khám bệnh",
+  "Xem quy định",
+  "Cập nhật quy định",
+  "Xem hóa đơn",
+  "Xem chức vụ",
+  "Tạo chức vụ",
+  "Cập nhật trạng thái chức vụ",
+  "Cập nhật thông tin chức vụ",
+  "Xem nhân viên",
+  "Tạo nhân viên",
+  "Cập nhật thông tin nhân viên",
+  "Cập nhật trạng thái làm việc",
+  "Xem thuốc",
+  "Tạo thuốc",
+  "Cập nhật thông tin thuốc",
+  "Cập nhật trạng thái lưu hành",
+  "Xem phân quyền chi tiết",
+  "Cập nhật phân quyền chi tiết",
+  "Xem báo cáo",
+];
+const loadedElements = [
+  "RAppointment",
+  "CAppointment",
+  "UAppointment",
+  "DAppointment",
+  "CRecord",
+  "CInvoice",
+  "RPatient",
+  "CPatient",
+  "UPatient",
+  "RRecord",
+  "RArgument",
+  "UArgument",
+  "RInvoice",
+  "RUserGroup",
+  "CUserGroup",
+  "DUserGroup",
+  "UUserGroup",
+  "RUser",
+  "CUser",
+  "UUser",
+  "DUser",
+  "RDrug",
+  "CDrug",
+  "UDrug",
+  "DDrug",
+  "RAuthorization",
+  "UAuthorization",
+  "RReport",
+];
+
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert(
-      "feats",
-      [
-        {
-          featName: "RAppointment",
-          loadedElement: "Examination"
-        },
-        {
-          featName: "CAppointment",
-          loadedElement: "Examination"
-        },
-        {
-          featName: "UAppointment",
-          loadedElement: "Examination"
-        },
-        {
-          featName: "DAppointment",
-          loadedElement: "Examination"
-        },
-        {
-          featName: "CRecord",
-          loadedElement: "Examination"
-        },
-        {
-          featName: "CBill",
-          loadedElement: "Examination"
-        },
-        {
-          featName: "RPatient",
-          loadedElement: "Patient"
-        },
-        {
-          featName: "CPatient",
-          loadedElement: "Patient"
-        },
-        {
-          featName: "DPatient",
-          loadedElement: "Patient"
-        },
-        {
-          featName: "UPatient",
-          loadedElement: "Patient"
-        },
-        {
-          featName: "RRecord",
-          loadedElement: "Patient"
-        },
-        {
-          featName: "DRecord",
-          loadedElement: "Patient"
-        },
-        {
-          featName: "RBill",
-          loadedElement: "Bill"
-        },
-        {
-          featName: "DBill",
-          loadedElement: "Bill"
-        },
-        {
-          featName: "RReport",
-          loadedElement: "Report"
-        },
-        {
-          featName: "RUser",
-          loadedElement: "User"
-        },
-        {
-          featName: "CUser",
-          loadedElement: "User"
-        },
-        {
-          featName: "UUser",
-          loadedElement: "User"
-        },
-        {
-          featName: "DUser",
-          loadedElement: "User"
-        },
-        {
-          featName: "UUserGroup",
-          loadedElement: "User"
-        },
-        {
-          featName: "RUserGroup",
-          loadedElement: "User"
-        },
-        {
-          featName: "RDrug",
-          loadedElement: "Medicine"
-        },
-        {
-          featName: "CDrug",
-          loadedElement: "Medicine"
-        },
-        {
-          featName: "DDrug",
-          loadedElement: "Medicine"
-        },
-        {
-          featName: "UDrug",
-          loadedElement: "Medicine"
-        },
-        {
-          featName: "RArgument",
-          loadedElement: "Principle"
-        },
-        {
-          featName: "UArgument",
-          loadedElement: "Principle"
-        },
-      ],
-      {}
-    );
+  async up(queryInterface, Sequelize) {
+    let mapFeature = [];
+    for (let i = 0; i < featNames.length; i++) {
+      mapFeature.push({
+        featName: featNames[i],
+        loadedElement: loadedElements[i],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }
+    await queryInterface.bulkInsert("feats", mapFeature, {});
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("feats", null, {});
-  }
+  },
 };

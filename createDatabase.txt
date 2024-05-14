@@ -16,7 +16,7 @@ npx sequelize-cli model:generate --name appointmentRecordDetails --attributes ap
 npx sequelize-cli model:generate --name usage --attributes usageDes:string
 npx sequelize-cli model:generate --name drugUsageAppointmentRecords --attributes drugUsageId:integer,appointmentRecordId:integer
 npx sequelize-cli model:generate --name drugUsage --attributes month:int 
-
+npx sequelize-cli model:generate --name drugUsageReport --attributes drugId:integer,count:integer,month:integer,year:integer
 db.users.create({
   userName: "admin1",
   password: "123456",

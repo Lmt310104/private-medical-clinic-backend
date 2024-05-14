@@ -6,18 +6,18 @@ const getAllAuthorizations = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated())
     {
-      const userGroup = await db.userGroup.findOne({
-        where: { groupName: req.user.user.role },
-      });
-      const authorizationAccess = await db.authorizations.findOne({
-        where: { userGroupId: userGroup.id, featId: 46 },
-      });
-      if (!authorizationAccess.isAccess) {
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      }
+      // const userGroup = await db.userGroup.findOne({
+      //   where: { groupName: req.user.user.role },
+      // });
+      // const authorizationAccess = await db.authorizations.findOne({
+      //   where: { userGroupId: userGroup.id, featId: 46 },
+      // });
+      // if (!authorizationAccess.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const authorization = await db.authorizations.findAll({
         attributes: {
           include: [
@@ -29,6 +29,17 @@ const getAllAuthorizations = asyncHandler(async (req, res, next) => {
                             feat.id = authorizations.featId
                         )`),
               "featName",
+            ],
+          ],
+          include: [
+            [
+              sequelize.literal(`(
+                          SELECT loadedElement
+                          FROM feats AS feat
+                          WHERE
+                            feat.id = authorizations.featId
+                        )`),
+              "loadedElement",
             ],
           ],
         },

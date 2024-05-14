@@ -7,7 +7,7 @@ module.exports = {
       "diseases",
       [
         {
-          diseaseName: "Flu",
+          diseaseName: "Cảm nhẹ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

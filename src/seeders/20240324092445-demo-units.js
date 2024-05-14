@@ -7,7 +7,7 @@ module.exports = {
       "units",
       [
         {
-          unitName: "Pack",
+          unitName: "Chai",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

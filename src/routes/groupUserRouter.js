@@ -9,6 +9,7 @@ router
 
 router
   .route("/:id")
+  .get(authenticateAccessToken, groupUserController.getGroupUserById)
   .put(authenticateAccessToken, groupUserController.updateGroupUserById)
   .delete(authenticateAccessToken, groupUserController.deleteGroupUserById);
 

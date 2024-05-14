@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       groupName: DataTypes.STRING,
       note: DataTypes.STRING,
+      isActive: DataTypes.INTEGER,
     },
     {
       sequelize,

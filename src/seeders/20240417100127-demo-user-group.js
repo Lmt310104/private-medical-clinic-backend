@@ -7,22 +7,22 @@ module.exports = {
       "userGroups",
       [
         {
-          groupName: "Admin",
+          groupName: "Quản trị viên",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          groupName: "Doctor",
+          groupName: "Bác sĩ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          groupName: "Reception",
+          groupName: "Tiếp tân",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          groupName: "Accountant",
+          groupName: "Kế toán",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

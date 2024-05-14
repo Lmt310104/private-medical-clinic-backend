@@ -22,10 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       birthYear: DataTypes.INTEGER,
       address: DataTypes.STRING,
       phoneNumber: DataTypes.STRING,
+      isActive: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "patients",
+    },
+    {
+      hooks: {
+        beforeCreate: (patient, options) => {
+          patient.id = "Patient" + uuid.v4();
+        },
+      },
     }
   );
   return patients;
