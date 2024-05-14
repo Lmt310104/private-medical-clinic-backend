@@ -102,12 +102,13 @@ const createAppointmentRecordDetail = asyncHandler(async (req, res, next) => {
       data: "",
     });
   }
-
+  const existingDrug = await db.drugs.findOne({ where: { id: drugId } });
   const appointmentRecordDetail = await db.appointmentRecordDetails.create({
     appointmentRecordId: appointmentRecordId,
     drugId: drugId,
     count: count,
     usageId: usageId,
+    drugPrice: existingDrug.price,
   });
   const reduceDrug = await drugService.reduceDrug({
     drugId: drugId,

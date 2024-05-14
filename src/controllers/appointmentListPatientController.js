@@ -51,9 +51,21 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
                 )`),
               "appointmentRecordId",
             ],
+            [
+              sequelize.literal(`(
+                  SELECT scheduleDate
+                  FROM appointmentLists AS appointmentList
+                  WHERE
+                    appointmentList.id = appointmentListPatient.appointmentListId
+                )`),
+              "scheduleDate",
+            ],
           ],
         },
-        order: [["createdAt", "DESC"]],
+        order: [
+          ["scheduleDate", "DESC"],
+          ["createdAt", "DESC"],
+        ],
       });
 
       res.status(200).json({
