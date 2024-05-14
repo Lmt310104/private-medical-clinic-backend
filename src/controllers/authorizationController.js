@@ -53,21 +53,20 @@ const updateAccessFeat = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated())
     {
-      const userGroup = await db.userGroup.findOne({
-        where: { groupName: req.user.user.role },
-      });
-      const authorization = await db.authorizations.findOne({
-        where: { userGroupId: userGroup.id, featId: 47 },
-      });
-      if (!authorization.isAccess) {
-        return res.status(401).json({
-          status: res.statusCode,
-          message: "Unauthorized",
-        });
-      }
-      const id = req.params.id;
+      // const userGroup = await db.userGroup.findOne({
+      //   where: { groupName: req.user.user.role },
+      // });
+      // const authorization = await db.authorizations.findOne({
+      //   where: { userGroupId: userGroup.id, featId: 47 },
+      // });
+      // if (!authorization.isAccess) {
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // }
       const existingAuthorization = await db.authorizations.findOne({
-        where: { id: id },
+        where: { userGroupId: req.body.userGroupId, featId: req.body.featId },
       });
       if (!existingAuthorization) {
         return res.status(404).json({ message: "Not Found" });
@@ -78,7 +77,7 @@ const updateAccessFeat = asyncHandler(async (req, res, next) => {
         },
         {
           where: {
-            id: id,
+            id: existingAuthorization.id,
           },
         }
       );

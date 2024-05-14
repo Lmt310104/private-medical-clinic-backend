@@ -7,154 +7,112 @@ module.exports = {
       "feats",
       [
         {
-          featName: "getAppointmentList",
+          featName: "RAppointment",
+          loadedElement: "Examination"
         },
         {
-          featName: "addAppointmentList",
+          featName: "CAppointment",
+          loadedElement: "Examination"
         },
         {
-          featName: "getAppointmentListPatient",
+          featName: "UAppointment",
+          loadedElement: "Examination"
         },
         {
-          featName: "addAppointmentListPatient",
+          featName: "DAppointment",
+          loadedElement: "Examination"
         },
         {
-          featName: "updateAppointmentListPatient",
+          featName: "CRecord",
+          loadedElement: "Examination"
         },
         {
-          featName: "deleteAppointmentListPatient",
+          featName: "CBill",
+          loadedElement: "Examination"
         },
         {
-          featName: "getAppointmentListRecord",
+          featName: "RPatient",
+          loadedElement: "Patient"
         },
         {
-          featName: "addAppointmentListRecord",
+          featName: "CPatient",
+          loadedElement: "Patient"
         },
         {
-          featName: "deleteAppointmentListRecord",
+          featName: "DPatient",
+          loadedElement: "Patient"
         },
         {
-          featName: "updateAppointmentListRecord",
+          featName: "UPatient",
+          loadedElement: "Patient"
         },
         {
-          featName: "getAppointmentRecordDetail",
+          featName: "RRecord",
+          loadedElement: "Patient"
         },
         {
-          featName: "addAppointmentRecordDetail",
+          featName: "DRecord",
+          loadedElement: "Patient"
         },
         {
-          featName: "deleteAppointmentRecordDetail",
+          featName: "RBill",
+          loadedElement: "Bill"
         },
         {
-          featName: "updateAppointmentRecordDetail",
+          featName: "DBill",
+          loadedElement: "Bill"
         },
         {
-          featName: "getArgument",
+          featName: "RReport",
+          loadedElement: "Report"
         },
         {
-          featName: "updateArgument",
+          featName: "RUser",
+          loadedElement: "User"
         },
         {
-          featName: "getBill",
+          featName: "CUser",
+          loadedElement: "User"
         },
         {
-          featName: "addBill",
+          featName: "UUser",
+          loadedElement: "User"
         },
         {
-          featName: "deleteBill",
+          featName: "DUser",
+          loadedElement: "User"
         },
         {
-          featName: "updateBill",
+          featName: "UUserGroup",
+          loadedElement: "User"
         },
         {
-          featName: "getDisease",
+          featName: "RUserGroup",
+          loadedElement: "User"
         },
         {
-          featName: "addDisease",
+          featName: "RDrug",
+          loadedElement: "Medicine"
         },
         {
-          featName: "deleteDisease",
+          featName: "CDrug",
+          loadedElement: "Medicine"
         },
         {
-          featName: "updateDisease",
+          featName: "DDrug",
+          loadedElement: "Medicine"
         },
         {
-          featName: "getUserGroup",
+          featName: "UDrug",
+          loadedElement: "Medicine"
         },
         {
-          featName: "getPatient",
+          featName: "RArgument",
+          loadedElement: "Principle"
         },
         {
-          featName: "addPatient",
-        },
-        {
-          featName: "deletePatient",
-        },
-        {
-          featName: "updatePatient",
-        },
-        {
-          featName: "getUnit",
-        },
-        {
-          featName: "addUnit",
-        },
-        {
-          featName: "deleteUnit",
-        },
-        {
-          featName: "updateUnit",
-        },
-        {
-          featName: "getUsage",
-        },
-        {
-          featName: "addUsage",
-        },
-        {
-          featName: "deleteUsage",
-        },
-        {
-          featName: "updateUsage",
-        },
-        {
-          featName: "getUser",
-        },
-        {
-          featName: "addUser",
-        },
-        {
-          featName: "deleteUser",
-        },
-        {
-          featName: "updateUser",
-        },
-        {
-          featName: "getDrug",
-        },
-        {
-          featName: "addDrug",
-        },
-        {
-          featName: "deleteDrug",
-        },
-        {
-          featName: "updateDrug",
-        },
-        {
-          featName: "getAuthorization",
-        },
-        {
-          featName: "updateAuthorization",
-        },
-        {
-          featName: "addUserGroup",
-        },
-        {
-          featName: "deleteUserGroup",
-        },
-        {
-          featName: "updateUserGroup",
+          featName: "UArgument",
+          loadedElement: "Principle"
         },
       ],
       {}
