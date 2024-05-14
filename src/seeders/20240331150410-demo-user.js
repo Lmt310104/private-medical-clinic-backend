@@ -8,8 +8,8 @@ module.exports = {
       [
         {
           userName: "Admin",
-          fullName: "Lê Minh Toàn",
-          email: "lmtoan311@gm.uit.edu.vn",
+          fullName: "Trần Văn A",
+          email: "thongduy2811@gmail.com",
           password: await bcrypt.hashSync("123456", 10),
           userGroupId: 1,
           refreshToken: "",
@@ -18,7 +18,7 @@ module.exports = {
         },
         {
           userName: "Doctor",
-          fullName: "Nguyen Van A",
+          fullName: "Trần Văn B",
           email: "doctor@gm.uit.edu.vn",
           password: await bcrypt.hashSync("123456", 10),
           userGroupId: 2,
@@ -28,7 +28,7 @@ module.exports = {
         },
         {
           userName: "Reception",
-          fullName: "Nguyen Van B",
+          fullName: "Trần Văn C",
           email: "reception@gm.uit.edu.vn",
           password: await bcrypt.hashSync("123456", 10),
           userGroupId: 3,
@@ -38,7 +38,7 @@ module.exports = {
         },
         {
           userName: "Accountant",
-          fullName: "Nguyen Van C",
+          fullName: "Trần Văn D",
           email: "reception@gm.uit.edu.vn",
           password: await bcrypt.hashSync("123456", 10),
           userGroupId: 4,

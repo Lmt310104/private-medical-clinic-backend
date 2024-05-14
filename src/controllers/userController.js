@@ -21,21 +21,16 @@ const getAllUser = asyncHandler(async (req, res, next) => {
       //   });
       // }
 
-      const users = await db.users.findAll(
-        {
-          where: { isActive: 1 },
-        },
-        {
-          include: [
-            {
-              model: db.userGroup,
-              as: "userGroup",
-              attributes: { exclude: ["createdAt", "updatedAt"] },
-            },
-          ],
-          attributes: { exclude: ["refreshToken", "password", "code"] },
-        }
-      );
+      const users = await db.users.findAll({
+        include: [
+          {
+            model: db.userGroup,
+            as: "userGroup",
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+          },
+        ],
+        attributes: { exclude: ["refreshToken", "password", "code"] },
+      });
 
       if (!users) {
         res.status(500).json({
@@ -159,9 +154,7 @@ const getUserById = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
-      const user = await db.users.findOne({
-        where: { id: id, isActive: 1 },
-      });
+      const user = await db.users.findOne({});
       if (!user) {
         return res.status(404).json({
           status: res.statusCode,
@@ -286,14 +279,15 @@ const deleteUserById = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
-      const user = await db.users.update(
-        {
-          isActive: 0,
-        },
-        {
-          where: { id: id },
-        }
-      );
+
+      const user = await db.users.findOne({ where: { id: id } });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      if (user.isActive === 1)
+        await db.users.update({ isActive: 0 }, { where: { id: id } });
+      else await db.users.update({ isActive: 1 }, { where: { id: id } });
+
       if (user) {
         res.status(200).json({
           status: res.statusCode,

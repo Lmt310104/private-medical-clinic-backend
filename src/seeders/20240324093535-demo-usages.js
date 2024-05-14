@@ -7,7 +7,7 @@ module.exports = {
       "usages",
       [
         {
-          usageDes: "Take 1 tablet once a day after meals",
+          usageDes: "Uống 2 viên/lần x 3 lần/ngày",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

@@ -13,9 +13,7 @@ const getAllGroupUser = asyncHandler(async (req, res) => {
       //     message: "Unauthorized",
       //   });
       // }
-      const groupUsers = await db.userGroup.findAll({
-        where: { isActive: 1 },
-      });
+      const groupUsers = await db.userGroup.findAll({});
       res.status(200).json({
         status: res.statusCode,
         message: "All groups",
@@ -174,10 +172,18 @@ const deleteGroupUserById = asyncHandler(async (req, res) => {
       if (!existingGroupUser) {
         return res.status(404).json({ message: "User Group not found" });
       }
-      await db.userGroup.update(
-        { isActive: 0 },
-        { where: { id: req.params.id } }
-      );
+
+      if (existingGroupUser.isActive === 1)
+        await db.userGroup.update(
+          { isActive: 0 },
+          { where: { id: req.params.id } }
+        );
+      else
+        await db.userGroup.update(
+          { isActive: 1 },
+          { where: { id: req.params.id } }
+        );
+
       res.status(200).json({ message: "User Group deleted successfully" });
     } else {
       return res.status(401).json({ message: "Unauthenticated" });
