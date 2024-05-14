@@ -3,6 +3,15 @@ const getDrugUsageReportService = require("../services/drugUsageReportService");
 
 const getAllDrugUsageReport = asyncHandler(async (req, res, next) => {
   if (req.isAuthenticated()) {
+    const authorization = await db.authorizations.findOne({
+      where: { userGroupId: req.user.user.roleId, featId: 28 },
+    });
+    if (!authorization.isAccess) {
+      return res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+      });
+    }
     const { page = 1, pageSize = 10, ...filters } = req.query;
     try {
       const data = await getDrugUsageReportService.getDrugUsageReports(

@@ -4,14 +4,15 @@ import { Op } from "sequelize";
 const getAllBill = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 17}});
-      // if (!authorization.isAccess) {
-      //   return res.status(401).json({
-      //     status: res.statusCode,
-      //     message: "Unauthorized",
-      //   });
-      // }
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: req.user.user.roleId, featId: 13 },
+      });
+      if (!authorization.isAccess) {
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      }
       const patientId = req.query.patientId ?? "";
       const appointmentListId = req.query.appointmentListId ?? "";
       if (patientId === "" && appointmentListId === "") {
@@ -53,14 +54,15 @@ const getAllBill = asyncHandler(async (req, res) => {
 const getBillById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 17}});
-      // if (!authorization.isAccess) {
-      //   return res.status(401).json({
-      //     status: res.statusCode,
-      //     message: "Unauthorized",
-      //   });
-      // }
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: req.user.user.roleId, featId: 13 },
+      });
+      if (!authorization.isAccess) {
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      }
       const bill = await db.bills.findOne({ where: { id: req.params.id } });
       res.status(200).json({
         status: res.statusCode,
@@ -85,14 +87,13 @@ const getBillById = asyncHandler(async (req, res) => {
 const createBill = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 18}});
-      // if (!authorization.isAccess) {
-      //   return res.status(401).json({
-      //     status: res.statusCode,
-      //     message: "Unauthorized",
-      //   });
-      // }
+      const authorization = await db.authorizations.findOne({where:{userGroupId: req.user.user.roleId, featId: 6}});
+      if (!authorization.isAccess) {
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      }
       const bill = req.body;
       const newBill = await db.bills.create({
         patientId: bill.patientId,
@@ -123,8 +124,7 @@ const createBill = asyncHandler(async (req, res) => {
 const updateBillById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 20}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: req.user.user.roleId, featId: 6}});
       // if (!authorization.isAccess) {
       //   return res.status(401).json({
       //     status: res.statusCode,
