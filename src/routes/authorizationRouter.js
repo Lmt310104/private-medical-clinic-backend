@@ -7,9 +7,7 @@ router
     .get(
         authenticateAccessToken,
         authorizations.getAllAuthorizations
-    );
-router
-    .route("/:id")
+    )
     .put(
         authenticateAccessToken,
         authorizations.updateAccessFeat

@@ -19,18 +19,15 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
       //   });
       // } else {
       // }
-      // const userGroup = await db.userGroup.findOne({
-      //   where: { groupName: req.user.user.role },
-      // });
-      // const authorization = await db.authorizations.findOne({
-      //   where: { userGroupId: userGroup.id, featId: 26 },
-      // });
-      // if (!authorization.isAccess) {
-      //   return res.status(401).json({
-      //     status: res.statusCode,
-      //     message: "Unauthorized",
-      //   });
-      // }
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: req.user.user.roleId, featId: 7 },
+      });
+      if (!authorization.isAccess) {
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      }
       const whereStatement = {};
       if (req.query && req.query?.phoneNumber) {
         whereStatement.phoneNumber = req.query.phoneNumber;
@@ -79,18 +76,15 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
 const createPatient = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      // const userGroup = await db.userGroup.findOne({
-      //   where: { groupName: req.user.user.role },
-      // });
-      // const authorization = await db.authorizations.findOne({
-      //   where: { userGroupId: userGroup.id, featId: 27 },
-      // });
-      // if (!authorization.isAccess) {
-      //   return res.status(401).json({
-      //     status: res.statusCode,
-      //     message: "Unauthorized",
-      //   });
-      // }
+      const authorization = await db.authorizations.findOne({
+        where: { userGroupId: req.user.user.roleId, featId: 8 },
+      });
+      if (!authorization.isAccess) {
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      }
       const { fullName, gender, birthYear, address, phoneNumber } = req.body;
       if (!fullName || !gender || !birthYear || !address || !phoneNumber) {
         res.status(400).json({
@@ -154,14 +148,13 @@ const createPatient = asyncHandler(async (req, res, next) => {
 const getPatientById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 26}});
-      // if (!authorization.isAccess) {
-      //   return res.status(401).json({
-      //     status: res.statusCode,
-      //     message: "Unauthorized",
-      //   });
-      // }
+      const authorization = await db.authorizations.findOne({where:{userGroupId: req.user.user.roleId, featId: 7}});
+      if (!authorization.isAccess) {
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      }
       const patient = await db.patients.findOne({
         where: { id: req.params.id, isActive: 1 },
       });
@@ -189,14 +182,13 @@ const getPatientById = asyncHandler(async (req, res, next) => {
 const updatePatientById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
-      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 29}});
-      // if (!authorization.isAccess) {
-      //   return res.status(401).json({
-      //     status: res.statusCode,
-      //     message: "Unauthorized",
-      //   });
-      // }
+      const authorization = await db.authorizations.findOne({where:{userGroupId: req.user.user.roleId, featId: 9}});
+      if (!authorization.isAccess) {
+        return res.status(401).json({
+          status: res.statusCode,
+          message: "Unauthorized",
+        });
+      }
       const { fullName, gender, birthYear, address, phoneNumber } = req.body;
       const patient = await db.patients.update(
         {
