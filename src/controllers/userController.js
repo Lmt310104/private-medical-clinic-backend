@@ -154,7 +154,7 @@ const getUserById = asyncHandler(async (req, res, next) => {
           data: "",
         });
       }
-      const user = await db.users.findOne({});
+      const user = await db.users.findOne({ where: { id: id } });
       if (!user) {
         return res.status(404).json({
           status: res.statusCode,
