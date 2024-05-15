@@ -11,4 +11,7 @@ router
   .get(authenticateAccessToken, drugController.getDrug)
   .put(authenticateAccessToken, drugController.updateDrug)
   .delete(authenticateAccessToken, drugController.deleteDrug);
+router
+  .route("/status/:id")
+  .post(authenticateAccessToken, drugController.updateStatusById);
 module.exports = router;

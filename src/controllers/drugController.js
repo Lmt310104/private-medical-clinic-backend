@@ -1,3 +1,5 @@
+import drugService from "../services/drug.service";
+
 const db = require("../models/index");
 const asyncHandler = require("express-async-handler");
 const { Op } = require("sequelize");
@@ -64,7 +66,7 @@ const addDrug = asyncHandler(async (req, res) => {
             count: drug.count,
             unitId: drug.unitId,
             isActive: 1,
-            note: drug.note
+            note: drug.note,
           });
           res.status(200).json({ message: "Drug added successfully" });
         }
@@ -142,7 +144,7 @@ const updateDrug = asyncHandler(async (req, res) => {
             price: drug.price,
             count: drug.count,
             unitId: drug.unitId,
-            note: drug.note
+            note: drug.note,
           },
           { where: { id: id } }
         );
@@ -195,5 +197,45 @@ const deleteDrug = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 });
+const updateStatusById = asyncHandler(async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const id = req.params.id;
+      const existingDrug = await drugService.findDrugById({ id: id });
+      if (!existingDrug) {
+        return res.status(404).json({
+          status: res.statusCode,
+          message: "Drug not found",
+        });
+      }
+      await drugService.updateStatusById({
+        id: id,
+        status: existingDrug.status,
+      });
+      res.status(200).json({
+        status: res.statusCode,
+        message: "Status updated successfully",
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: res.statusCode,
+        message: "server error",
+      });
+    }
+  } else {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: "Unauthorized",
+      data: "",
+    });
+  }
+});
 
-export default { getAllDrugs, addDrug, getDrug, updateDrug, deleteDrug };
+export default {
+  getAllDrugs,
+  addDrug,
+  getDrug,
+  updateDrug,
+  deleteDrug,
+  updateStatusById,
+};
