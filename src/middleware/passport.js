@@ -26,7 +26,7 @@ auth.use(
       console.log(profile.emails[0].value);
       try {
         const user = await db.users.findOne({
-          where: { email: profile.emails[0].value },
+          where: { email: profile.emails[0].value, isActive: 1 },
         });
         if (user) {
           const role = await db.userGroup.findOne({
@@ -94,8 +94,9 @@ auth.use(
   new LocalStatregy(
     asyncHandler(async (username, password, done) => {
       try {
-        const user = await db.users.findOne({ where: { userName: username } });
-        console.log(user);
+        const user = await db.users.findOne({
+          where: { userName: username, isActive: 1 },
+        });
 
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },

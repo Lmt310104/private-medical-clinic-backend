@@ -17,7 +17,9 @@ class userService {
     }
   }
   static async checkEmail({ email }) {
-    const checkEmail = await model.users.findOne({ where: { email: email } });
+    const checkEmail = await model.users.findOne({
+      where: { email: email, isActive: 1 },
+    });
     if (checkEmail) {
       return true;
     }
@@ -25,7 +27,7 @@ class userService {
   }
   static async checkCode({ email, code }) {
     const checkCode = await model.users.findOne({
-      where: { email: email, code: code },
+      where: { email: email, code: code, isActive: 1 },
     });
     console.log(checkCode);
     if (checkCode) {
@@ -39,31 +41,25 @@ class userService {
     }
 
     const hashedPassword = await bcrypt.hashSync(newPassword, 10);
-    console.log(newPassword);
-    console.log(hashedPassword);
-    console.log(email);
     const resetStatus = await model.users.update(
       { password: hashedPassword },
-      { where: { email: email } }
+      { where: { email: email, isActive: 1 } }
     );
     if (resetStatus[0]) {
       return true;
     }
     return false;
   }
-  
+
   static async resetPasswordById({ id, newPassword, confirmPassword }) {
     if (newPassword !== confirmPassword) {
       return false;
     }
 
     const hashedPassword = await bcrypt.hashSync(newPassword, 10);
-    console.log(newPassword);
-    console.log(hashedPassword);
-    console.log(id);
     const resetStatus = await model.users.update(
       { password: hashedPassword },
-      { where: { id: id } }
+      { where: { id: id, isActive: 1 } }
     );
     if (resetStatus[0]) {
       return true;
