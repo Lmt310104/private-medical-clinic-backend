@@ -7,10 +7,11 @@ const db = require("../models/index");
 import jwt, { verify } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 require("dotenv").config();
+import sequelize from "sequelize";
 
 const auth = new passport.Passport();
 
-//sign in with google
+// sign in with google
 auth.use(
   new GoogleStategy(
     {
@@ -25,22 +26,48 @@ auth.use(
       console.log(profile.emails[0].value);
       try {
         const user = await db.users.findOne({
-          include: [{ model: db.userGroup, as: "userGroup" }],
-          where: { email: profile.emails[0].value },
+          where: { email: profile.emails[0].value, isActive: 1 },
         });
-        console.log(user);
         if (user) {
+          const role = await db.userGroup.findOne({
+            where: { id: user.dataValues.userGroupId },
+          });
+          const authorizationData = await db.authorizations.findAll({
+            where: { userGroupId: user.dataValues.userGroupId, isAccess: 1 },
+            attributes: {
+              include: [
+                [
+                  sequelize.literal(`(
+                              SELECT loadedElement
+                              FROM feats AS feat
+                              WHERE
+                                feat.id = authorizations.featId
+                            )`),
+                  "loadedElement",
+                ],
+              ],
+            },
+          });
+          const permission = authorizationData.map((auth) => {
+            return auth.dataValues.loadedElement;
+          });
+
+          const nonNullPermission = permission.filter((auth) => auth !== null);
+
           const userData = {
             username: user.dataValues.userName,
             email: user.dataValues.email,
             fullName: user.dataValues.fullName,
             id: user.dataValues.id,
-            role: user.dataValues.userGroup.dataValues.groupName,
+            role: role.dataValues.groupName,
+            roleId: user.dataValues.userGroupId,
+            permission: nonNullPermission,
           };
           const accessToken = generateAccessToken(userData);
           const refreshToken = jwt.sign(
             userData,
-            process.env.REFRESH_KEY_SECRET
+            process.env.REFRESH_KEY_SECRET,
+            { expiresIn: "7d" }
           );
           await db.users.update(
             { refreshToken: refreshToken },
@@ -61,26 +88,57 @@ auth.use(
     }
   )
 );
+
 auth.use(
   "local",
   new LocalStatregy(
     asyncHandler(async (username, password, done) => {
       try {
-        const user = await db.users.findOne({ where: { userName: username } });
+        const user = await db.users.findOne({
+          where: { userName: username, isActive: 1 },
+        });
+
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId },
         });
-        if (user && bcrypt.compare(user.dataValues.password, password)) {
+        const authorizationData = await db.authorizations.findAll({
+          where: { userGroupId: user.dataValues.userGroupId, isAccess: 1 },
+          attributes: {
+            include: [
+              [
+                sequelize.literal(`(
+                            SELECT loadedElement
+                            FROM feats AS feat
+                            WHERE
+                              feat.id = authorizations.featId
+                          )`),
+                "loadedElement",
+              ],
+            ],
+          },
+        });
+        const permission = authorizationData.map((auth) => {
+          return auth.dataValues.loadedElement;
+        });
+
+        const nonNullPermission = permission.filter((auth) => auth !== null);
+
+        if (
+          user &&
+          (await bcrypt.compare(password, user.dataValues.password))
+        ) {
           const userData = {
             username: user.dataValues.userName,
             email: user.dataValues.email,
-            fullName: user.dataValues.fullName,
             id: user.dataValues.id,
             role: role.dataValues.groupName,
+            roleId: user.dataValues.userGroupId,
+            permission: nonNullPermission,
           };
           const refreshToken = jwt.sign(
             userData,
-            process.env.REFRESH_KEY_SECRET
+            process.env.REFRESH_KEY_SECRET,
+            { expiresIn: "7d" }
           );
           await db.users.update(
             { refreshToken: refreshToken },
@@ -91,7 +149,6 @@ auth.use(
             refreshToken: refreshToken,
             accessToken: generateAccessToken(userData),
           };
-          console.log("Passport js thanh cong");
           done(null, userResponse);
         } else {
           return done(null, false);

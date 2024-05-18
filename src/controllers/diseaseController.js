@@ -4,6 +4,25 @@ import asyncHandler from "express-async-handler";
 const getAllDiseases = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      // const diseaseName = req.query.diseaseName || "";
+      // const orderBy = req.query.orderBy || "diseaseName";
+      // const order = req.query.order || "ASC";
+      // const diseases = await db.diseases.findAll(
+      //   {
+      //     where: { diseaseName: { [Op.like]: `%${diseaseName}%` } },
+      //   },
+      //   {
+      //     order: [[orderBy, order]],
+      //   }
+      // );
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 21}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const diseases = await db.diseases.findAll();
       if (!diseases) {
         res.status(404).json({ message: "Not found" });
@@ -21,6 +40,14 @@ const getAllDiseases = asyncHandler(async (req, res) => {
 const getDiseaseById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 21}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const id = req.params.id;
       const disease = await db.diseases.findOne({ where: { id: id } });
       if (!disease) {
@@ -39,6 +66,14 @@ const getDiseaseById = asyncHandler(async (req, res) => {
 const createDisease = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 22}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const { diseaseName } = req.body;
       const disease = await db.diseases.create({
         diseaseName: diseaseName,
@@ -56,6 +91,14 @@ const createDisease = asyncHandler(async (req, res) => {
 const updateDiseaseById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 24}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const id = req.params.id;
       const { diseaseName } = req.body;
       const disease = await db.diseases.findOne({ where: { id: id } });
@@ -77,13 +120,21 @@ const updateDiseaseById = asyncHandler(async (req, res) => {
 const deleteDiseaseById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 23}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const id = req.params.id;
       const disease = await db.diseases.findOne({ where: { id: id } });
       if (!disease) {
         return res.status(404).json({ message: "Disease not found" });
       }
       await disease.destroy();
-      res.status(204).json({ success: "success" });
+      res.status(200).json({ success: "success" });
     } else {
       res.status(401).json({ message: "Unauthorized" });
     }

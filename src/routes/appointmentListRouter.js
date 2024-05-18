@@ -10,4 +10,6 @@ router
     appointmentListController.createAppointmentList
   );
 
+router.route("/:id").get(appointmentListController.getAppointmentListById);
+
 module.exports = router;

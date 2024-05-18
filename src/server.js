@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 8888;
 const session = require("express-session");
 const secretSessionKey = process.env.SECRET_SESSION_KEY;
+const job = require("../src/utils/saveData");
 
 //connect to database
 connection();
@@ -34,15 +35,18 @@ app.use(
 app.use(cookieParser());
 app.use(auth.initialize());
 app.use(auth.session());
-app.use(function (req, res, next) {
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Credentials", "true"); // Thiết lập Access-Control-Allow-Credentials thành true
+//   next();
+// });
 
 app.use(express.urlencoded({ extended: true }));
 
 //routes
 
 app.use("/api/v1/auth", require("./routes/authRouter"));
+app.use("/api/v1/authorizations", require("./routes/authorizationRouter"));
+app.use("/api/v1/usergroups", require("./routes/groupUserRouter"));
 app.use("/api/v1/drugs", require("./routes/drugRouter"));
 app.use("/api/v1/arguments", require("./routes/argumentRouter"));
 app.use("/api/v1/units", require("./routes/unitRouter"));
@@ -59,6 +63,17 @@ app.use(
   "/api/v1/appointmentlistpatients",
   require("./routes/appointmentListPatientRouter")
 );
+app.use(
+  "/api/v1/appointmentrecorddetails",
+  require("./routes/appointmentRecordDetailRouter")
+);
+app.use("/api/v1/bills", require("./routes/billRouter"));
+app.use("/api/v1/patients", require("./routes/patientRouter"));
+app.use("/api/v1/features", require("./routes/featureRouter"));
+app.use("/api/v1/drugusagereports", require("./routes/drugUsageReport.router"));
+
+// Start the cron job
+job.start();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

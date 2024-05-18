@@ -1,3 +1,4 @@
+import { compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 const db = require("../models/index");
 require("dotenv").config();
@@ -6,12 +7,10 @@ export const generateAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_KEY_SECRET, { expiresIn: "15m" });
 };
 export const authenticateAccessToken = async (req, res, next) => {
-  console.log(req.isAuthenticated());
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized1" });
   }
   const authHeader = req.headers["authorization"];
-  console.log(authHeader);
 
   if (!authHeader) {
     return res.status(401).json({ message: "Unauthorized2" });
@@ -36,6 +35,7 @@ export const authenticateAccessToken = async (req, res, next) => {
       return res.status(403).json({ message: "Unauthorized4" });
     }
     try {
+      console.log("this is user verify", req.user);
       jwt.verify(req.user.refreshToken, process.env.REFRESH_KEY_SECRET);
       const accessToken = generateAccessToken(req.user.user);
       req.user.accessToken = accessToken;

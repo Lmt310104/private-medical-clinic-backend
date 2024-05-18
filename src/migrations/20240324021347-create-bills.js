@@ -1,34 +1,37 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('bills', {
+    await queryInterface.createTable("bills", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       patientId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       appointmentListId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       drugExpense: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+      },
+      feeConsult: {
+        type: Sequelize.BIGINT,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('bills');
-  }
+    await queryInterface.dropTable("bills");
+  },
 };

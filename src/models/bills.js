@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         through: models.monthlyRevenueBill,
         foreignKey: "billId",
       });
+      bills.belongsTo(models.patients, {
+        foreignKey: "patientId",
+      });
+      bills.belongsTo(models.appointmentList, {
+        foreignKey: "appointmentListId",
+      });
     }
   }
   bills.init(
@@ -19,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       patientId: DataTypes.INTEGER,
       appointmentListId: DataTypes.INTEGER,
       drugExpense: DataTypes.BIGINT,
+      feeConsult: DataTypes.BIGINT,
     },
     {
       sequelize,

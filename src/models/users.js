@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      users.belongsTo(models.userGroup, { foreignKey: "userGroupId" });
+      users.belongsTo(models.userGroup, {
+        foreignKey: "userGroupId",
+      });
     }
   }
   users.init(
@@ -18,7 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       userGroupId: DataTypes.INTEGER,
-      refreshToken: DataTypes.STRING,
+      refreshToken: DataTypes.TEXT,
+      code: DataTypes.STRING,
+      isActive: DataTypes.INTEGER,
     },
     {
       sequelize,

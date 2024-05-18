@@ -16,7 +16,7 @@ router
   .route("/:id")
   .get(
     authenticateAccessToken,
-    appointmentListPatientController.getAppointmentListById
+    appointmentListPatientController.getAppointmentListPatientById
   )
   .put(
     authenticateAccessToken,

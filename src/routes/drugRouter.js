@@ -1,5 +1,4 @@
 const router = require("express").Router();
-import { Model } from "sequelize";
 import drugController from "../controllers/drugController";
 import { authenticateAccessToken } from "../middleware/jwt";
 
@@ -12,4 +11,7 @@ router
   .get(authenticateAccessToken, drugController.getDrug)
   .put(authenticateAccessToken, drugController.updateDrug)
   .delete(authenticateAccessToken, drugController.deleteDrug);
+router
+  .route("/status/:id")
+  .post(authenticateAccessToken, drugController.updateStatusById);
 module.exports = router;

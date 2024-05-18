@@ -12,10 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       patients.hasMany(models.appointmentListPatient, {
         foreignKey: "patientId",
       });
-      patients.belongsToMany(models.appointmentList, {
-        through: models.bills,
-        foreignKey: "patientId",
-      });
+      patients.hasMany(models.bills, { foreignKey: "patientId" });
     }
   }
   patients.init(
@@ -25,10 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       birthYear: DataTypes.INTEGER,
       address: DataTypes.STRING,
       phoneNumber: DataTypes.STRING,
+      isActive: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "patients",
+    },
+    {
+      hooks: {
+        beforeCreate: (patient, options) => {
+          patient.id = "Patient" + uuid.v4();
+        },
+      },
     }
   );
   return patients;

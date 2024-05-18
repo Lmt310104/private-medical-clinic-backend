@@ -8,15 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      drugs.belongsTo(models.unit, { foreignKey: "unitId" });
-      drugs.belongsToMany(models.appointmentRecords, {
-        through: models.appointmentRecordDetails,
-        foreignKey: "drugId",
-      });
-      drugs.belongsToMany(models.usage, {
-        through: models.appointmentRecordDetails,
-        foreignKey: "drugId",
-      });
+      // define association here
     }
   }
   drugs.init(
@@ -25,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.BIGINT,
       count: DataTypes.INTEGER,
       unitId: DataTypes.INTEGER,
+      note: DataTypes.STRING,
+      isActive: DataTypes.INTEGER,
+      status: DataTypes.INTEGER,
     },
     {
       sequelize,

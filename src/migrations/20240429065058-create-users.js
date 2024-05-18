@@ -11,7 +11,6 @@ module.exports = {
       },
       userName: {
         type: Sequelize.STRING,
-        unique: true,
       },
       fullName: {
         type: Sequelize.STRING,
@@ -26,7 +25,14 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       refreshToken: {
+        type: Sequelize.TEXT,
+      },
+      code: {
         type: Sequelize.STRING,
+      },
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
       },
       createdAt: {
         allowNull: false,

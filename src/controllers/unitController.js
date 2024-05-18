@@ -4,6 +4,14 @@ import asyncHandler from "express-async-handler";
 const getAllUnit = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 30}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const units = await db.unit.findAll();
       if (!units) {
         res.status(500).json({ message: "server error" });
@@ -26,6 +34,14 @@ const getAllUnit = asyncHandler(async (req, res, next) => {
 
 const createUnit = asyncHandler(async (req, res, next) => {
   try {
+    // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+    //   const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 31}});
+    //   if (!authorization.isAccess) { 
+    //     return res.status(401).json({
+    //       status: res.statusCode,
+    //       message: "Unauthorized",
+    //     });
+    //   } 
     const { unitName } = req.body;
     if (!unitName) {
       res.status(400).json({
@@ -55,8 +71,15 @@ const createUnit = asyncHandler(async (req, res, next) => {
 const updateUnitById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 33}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const unitId = req.params.id;
-      console.log(unitId);
       const { unitName } = req.body;
       if (!unitName) {
         res.status(400).json({
@@ -104,6 +127,14 @@ const updateUnitById = asyncHandler(async (req, res, next) => {
 const deleteUnitById = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
+      // const userGroup = await db.userGroup.findOne({where:{groupName: req.user.user.role}});
+      // const authorization = await db.authorizations.findOne({where:{userGroupId: userGroup.id, featId: 32}});
+      // if (!authorization.isAccess) { 
+      //   return res.status(401).json({
+      //     status: res.statusCode,
+      //     message: "Unauthorized",
+      //   });
+      // } 
       const unitId = req.params.id;
       try {
         const unit = await db.unit.destroy({
