@@ -69,7 +69,6 @@ const getAllBookingAppointmentList = asyncHandler(async (req, res, next) => {
 });
 
 const getBookingAppointmentListByDate = asyncHandler(async (req, res, next) => {
-  console.log("this is booking date", req.query.bookingDate);
   try {
     if (req.isAuthenticated()) {
       const bookingDate = moment(req.query.bookingDate).format("YYYY-MM-DD");
