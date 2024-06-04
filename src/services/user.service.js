@@ -21,7 +21,14 @@ class userService {
       where: { email: email, isActive: 1 },
     });
     if (checkEmail) {
-      return true;
+      const role = await model.userGroup.findOne({
+        where: { id: checkEmail.dataValues.userGroupId, isActive: 1 },
+      });
+      if (!role) {
+        return false;
+      } else {
+        return true;
+      }
     }
     return false;
   }

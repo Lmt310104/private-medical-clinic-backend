@@ -190,12 +190,12 @@ const sendOTP = asyncHandler(async (req, res, next) => {
       const info = await transporter.sendMail({
         from: `Private Medical Clinic <${process.env.GOOGLE_APP_EMAIL}>`, // sender address
         to: `${req.body.email}`, // list of receivers
-        subject: "Reset password from private-medical-clinic", // Subject line
+        subject: "Mã OTP từ Private Medical Clinic", // Subject line
         text: "Hello world?", // plain text body
         html: `
-      <div>Hi ${req.body.email},</div>
-      <div>We received a request to reset your password</div>
-      <div>Your OTP: <br>${OTP}</br></div>
+      <div>Xin chào ${req.body.email},</div>
+      <div>Chúng tôi nhân được yêu cầu lấy lại mật khẩu từ bạn</div>
+      <div>Mã OTP: ${OTP}</div>
       `, // html body
       });
       //update code in database

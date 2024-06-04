@@ -1,6 +1,7 @@
 import { where } from "sequelize";
 import db from "../models/index.js";
 import asyncHandler from "express-async-handler";
+import sequelize from "sequelize";
 
 const getAllGroupUser = asyncHandler(async (req, res) => {
   try {
@@ -222,16 +223,34 @@ const getGroupUserById = asyncHandler(async (req, res) => {
       const authorizations = await db.authorizations.findAll({
         where: { userGroupId: req.params.id, isAccess: true },
         attributes: {
+          include: [
+            [
+              sequelize.literal(`(
+                          SELECT loadedElement
+                          FROM feats
+                          WHERE
+                          feats.id = authorizations.featId
+                        )`),
+              "loadedElement",
+            ]
+          ],
           exclude: ["isAccess", "userGroupId", "id", "createdAt", "updatedAt"],
         },
       });
+
+
       const allAllowedPermissions = authorizations.map(
         (permission) => permission.featId
       );
+
+      const allowedPermissionElements = authorizations.map((permission) =>  permission.dataValues.loadedElement);
+
+
+
       res.status(200).json({
         status: res.statusCode,
         message: "group user found",
-        data: { groupUser, allAllowedPermissions },
+        data: { groupUser, allAllowedPermissions , allowedPermissionElements},
       });
     } else {
       return res.status(401).json({ message: "Unauthenticated" });
