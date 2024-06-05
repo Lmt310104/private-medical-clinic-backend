@@ -11,7 +11,7 @@ npx sequelize-cli model:generate --name diseases --attributes diseaseName:string
 npx sequelize-cli model:generate --name unit --attributes unitName:string
 npx sequelize-cli model:generate --name monthlyRevenue --attributes month:integer,year:integer
 npx sequelize-cli model:generate --name monthlyRevenueBill --attributes monthlyRevenueId:integer,billId:integer
-npx sequelize-cli model:generate --name appointmentListPatient --attributes appointmentListId:integer,patientId:integer
+npx sequelize-cli model:generate --name appointmentListPatient --attributes appointmentListId:integer,patientId:integer,orderNumber:integer,timeUpdate:date
 npx sequelize-cli model:generate --name appointmentRecordDetails --attributes appointmentRecordId:integer,drugId:integer,count:integer,usageId:integer
 npx sequelize-cli model:generate --name usage --attributes usageDes:string
 npx sequelize-cli model:generate --name drugUsageAppointmentRecords --attributes drugUsageId:integer,appointmentRecordId:integer

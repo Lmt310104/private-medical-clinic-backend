@@ -15,6 +15,12 @@ module.exports = {
       patientId: {
         type: Sequelize.INTEGER
       },
+      orderNumber: {
+        type: Sequelize.INTEGER
+      },
+      timeUpdate: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

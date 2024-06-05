@@ -26,5 +26,11 @@ router
     authenticateAccessToken,
     appointmentListPatientController.deleteAppointmentListPatient
   );
+router
+  .route("/:id/update")
+  .put(
+    authenticateAccessToken,
+    appointmentListPatientController.moveAppointmentListPatientToTheEnd
+  );
 
 module.exports = router;

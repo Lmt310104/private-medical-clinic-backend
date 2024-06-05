@@ -64,6 +64,7 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
         },
         order: [
           ["scheduleDate", "DESC"],
+          ["timeUpdate", "ASC"],
           ["createdAt", "ASC"],
         ],
       });
@@ -111,14 +112,65 @@ const createAppointmentListPatient = asyncHandler(async (req, res) => {
           data: "",
         });
       }
+      const record = await db.appointmentListPatient.findOne({
+        where: {
+          appointmentListId: appointmentListId,
+        },
+        order: [["orderNumber", "DESC"]],
+      });
+      console.log(record);
+      const orderNumber = record ? record.orderNumber + 1 : 1;
       const appointmentListPatient = await db.appointmentListPatient.create({
         patientId: patientId,
         appointmentListId: appointmentListId,
+        timeUpdate: Date.now(),
+        orderNumber: orderNumber,
       });
       res.status(201).json({
         status: res.statusCode,
         message: "New appointmentList created",
         data: appointmentListPatient,
+      });
+    } else {
+      res.status(401).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+        data: "",
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: "server error",
+      data: "",
+    });
+  }
+});
+const moveAppointmentListPatientToTheEnd = asyncHandler(async (req, res) => {
+  try {
+    if (req.isAuthenticated()) {
+      const appointmentListPatient = await db.appointmentListPatient.findOne({
+        where: { id: req.params.id },
+      });
+      const record = await db.appointmentListPatient.findOne({
+        where: {
+          appointmentListId: appointmentListPatient.appointmentListId,
+        },
+        order: [["orderNumber", "DESC"]],
+      });
+      const orderNumber = record ? record.orderNumber + 1 : 1;
+      const appointmentListPatientUpdate =
+        await db.appointmentListPatient.update(
+          {
+            orderNumber: orderNumber,
+            timeUpdate: Date.now(),
+          },
+          { where: { id: req.params.id } }
+        );
+      res.status(200).json({
+        status: res.statusCode,
+        message: "AppointmentList updated",
+        data: appointmentListPatientUpdate,
       });
     } else {
       res.status(401).json({
@@ -267,4 +319,5 @@ export default {
   updateAppointmentListPatient,
   deleteAppointmentListPatient,
   getAppointmentListPatientById,
+  moveAppointmentListPatientToTheEnd,
 };
