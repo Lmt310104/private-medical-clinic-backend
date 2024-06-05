@@ -26,6 +26,7 @@ const fetchDataFromGoogleSheets = asyncHandler(async (req, res, next) => {
           await db.bookingAppointmentList.findOne({
             where: {
               phone: data[i][3],
+              bookingDate: data[i][0],
             },
           });
         if (!existingBookingAppointment) {
@@ -37,6 +38,7 @@ const fetchDataFromGoogleSheets = asyncHandler(async (req, res, next) => {
               gender: data[i][4],
               address: data[i][5],
               bookingAppointment: data[i][6],
+              birthYear: data[i][7],
             }
           );
         }
@@ -69,7 +71,7 @@ const getAllBookingAppointmentList = asyncHandler(async (req, res, next) => {
 const getBookingAppointmentListByDate = asyncHandler(async (req, res, next) => {
   try {
     if (req.isAuthenticated()) {
-      const bookingDate = moment(req.body.bookingDate).format("YYYY-MM-DD");
+      const bookingDate = moment(req.query.bookingDate).format("YYYY-MM-DD");
       const bookingAppointmentList = await db.bookingAppointmentList.findAll({
         where: {
           [Op.and]: [
@@ -121,9 +123,7 @@ const createBookingAppointment = asyncHandler(async (req, res, next) => {
         });
         return res.status(200).json({ bookingAppointment: bookingAppointment });
       } else {
-        return res
-         .status(400)
-         .json({ message: "Phone number already exists" });
+        return res.status(400).json({ message: "Phone number already exists" });
       }
     } else {
       return res.status(401).json({ message: "Unauthorized" });
@@ -148,13 +148,8 @@ const updateBookingAppointmentById = asyncHandler(async (req, res, next) => {
       }
       const bookingAppointment = await db.bookingAppointmentList.update(
         {
-          bookingDate: req.body.bookingDate,
-          fullName: req.body.fullName,
-          phone: req.body.phone,
-          gender: req.body.gender,
-          address: req.body.address,
+          status: "Accepted",
           bookingAppointment: req.body.bookingAppointment,
-          status: req.body.status,
         },
         {
           where: {

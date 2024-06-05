@@ -64,7 +64,7 @@ const getAllAppointmentList = asyncHandler(async (req, res) => {
         },
         order: [
           ["scheduleDate", "DESC"],
-          ["createdAt", "DESC"],
+          ["createdAt", "ASC"],
         ],
       });
 

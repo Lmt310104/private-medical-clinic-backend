@@ -5,7 +5,7 @@ const auth = require("../middleware/passport");
 router.route("/google").get(auth.authenticate("google"));
 router.route("/oauth2/redirect/google").get(
   auth.authenticate("google", {
-    successRedirect: "http://localhost:3000/login/success",
+    successRedirect: "http://localhost:3000/success",
     failureRedirect: "http://localhost:3000/",
   })
 );

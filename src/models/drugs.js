@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       unitId: DataTypes.INTEGER,
       note: DataTypes.STRING,
       isActive: DataTypes.INTEGER,
-      status: DataTypes.INTEGER,
     },
     {
       sequelize,
