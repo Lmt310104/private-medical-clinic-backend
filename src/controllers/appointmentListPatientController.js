@@ -149,20 +149,9 @@ const createAppointmentListPatient = asyncHandler(async (req, res) => {
 const moveAppointmentListPatientToTheEnd = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
-      const appointmentListPatient = await db.appointmentListPatient.findOne({
-        where: { id: req.params.id },
-      });
-      const record = await db.appointmentListPatient.findOne({
-        where: {
-          appointmentListId: appointmentListPatient.appointmentListId,
-        },
-        order: [["orderNumber", "DESC"]],
-      });
-      const orderNumber = record ? record.orderNumber + 1 : 1;
       const appointmentListPatientUpdate =
         await db.appointmentListPatient.update(
           {
-            orderNumber: orderNumber,
             timeUpdate: Date.now(),
           },
           { where: { id: req.params.id } }
@@ -210,10 +199,20 @@ const updateAppointmentListPatient = asyncHandler(async (req, res) => {
           data: "",
         });
       }
+      const record = await db.appointmentListPatient.findOne({
+        where: {
+          appointmentListId: appointmentListId,
+        },
+        order: [["orderNumber", "DESC"]],
+      });
+      const orderNumber = record ? record.orderNumber + 1 : 1;
+
       const appointmentListPatient = await db.appointmentListPatient.update(
         {
           patientId: patientId,
           appointmentListId: appointmentListId,
+          orderNumber: orderNumber,
+          timeUpdate: Date.now(),
         },
         { where: { id: req.params.id } }
       );
@@ -278,6 +277,7 @@ const deleteAppointmentListPatient = asyncHandler(async (req, res) => {
 const getAppointmentListPatientById = asyncHandler(async (req, res) => {
   try {
     if (req.isAuthenticated()) {
+      console.log("this is id", req.params.id);
       const appointmentList = await db.appointmentListPatient.findOne({
         where: { id: req.params.id },
         include: [
