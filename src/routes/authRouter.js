@@ -5,7 +5,7 @@ const auth = require("../middleware/passport");
 router.route("/google").get(auth.authenticate("google"));
 router.route("/oauth2/redirect/google").get(
   auth.authenticate("google", {
-    successRedirect: "http://localhost:3000/login/success",
+    successRedirect: "http://localhost:3000/success",
     failureRedirect: "http://localhost:3000/",
   })
 );
@@ -21,4 +21,9 @@ router.route("/check-email").post(authController.checkEmail);
 router.route("/check-otp").post(authController.checkOTPByEmail);
 router.route("/reset-password").post(authController.resetPassword);
 router.route("/reset-password-by-id").post(authController.resetPasswordById);
+router
+  .route("/patients/validPhoneNumber")
+  .post(authController.checkPhoneNumber);
+router.route("/patients/sendOTPToPhone").post(authController.sendOTPToPhone);
+router.route("/patients/checkOTP").post(authController.checkOTPByPhone);
 module.exports = router;

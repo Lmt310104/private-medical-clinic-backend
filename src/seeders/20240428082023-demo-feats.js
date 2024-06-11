@@ -27,8 +27,6 @@ const featNames = [
   "Tạo thuốc",
   "Cập nhật thông tin thuốc",
   "Cập nhật trạng thái lưu hành",
-  "Xem phân quyền chi tiết",
-  "Cập nhật phân quyền chi tiết",
   "Xem báo cáo",
 ];
 const loadedElements = [
@@ -57,8 +55,6 @@ const loadedElements = [
   "CDrug",
   "UDrug",
   "DDrug",
-  "RAuthorization",
-  "UAuthorization",
   "RReport",
 ];
 

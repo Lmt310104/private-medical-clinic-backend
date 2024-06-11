@@ -4,6 +4,8 @@ const nodemailer = require("nodemailer");
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import userService from "../services/user.service";
+import patientService from "../services/patients.service";
+const sendSMS = require("../utils/sendSMS");
 require("dotenv").config();
 
 const login = async (req, res, next) => {
@@ -190,12 +192,12 @@ const sendOTP = asyncHandler(async (req, res, next) => {
       const info = await transporter.sendMail({
         from: `Private Medical Clinic <${process.env.GOOGLE_APP_EMAIL}>`, // sender address
         to: `${req.body.email}`, // list of receivers
-        subject: "Reset password from private-medical-clinic", // Subject line
+        subject: "Mã OTP từ Private Medical Clinic", // Subject line
         text: "Hello world?", // plain text body
         html: `
-      <div>Hi ${req.body.email},</div>
-      <div>We received a request to reset your password</div>
-      <div>Your OTP: <br>${OTP}</br></div>
+      <div>Xin chào ${req.body.email},</div>
+      <div>Chúng tôi nhân được yêu cầu lấy lại mật khẩu từ bạn</div>
+      <div>Mã OTP: ${OTP}</div>
       `, // html body
       });
       //update code in database
@@ -318,6 +320,107 @@ const resetPasswordById = asyncHandler(async (req, res, next) => {
     });
   }
 });
+const checkPhoneNumber = asyncHandler(async (req, res, next) => {
+  try {
+    const phoneNumber = req.body.phoneNumber;
+    if (!phoneNumber) {
+      return res.status(400).json({
+        status: res.statusCode,
+        message: "Phone number is required",
+        data: "",
+      });
+    }
+    const patient = await patientService.validPhoneNumber({ phoneNumber });
+    if (!patient) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: "Patient not found",
+        data: "",
+      });
+    }
+    res.status(200).json({
+      status: res.statusCode,
+      message: "success",
+      data: patient,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: "server error",
+      error: err.stack,
+      data: "",
+    });
+  }
+});
+const sendOTPToPhone = asyncHandler(async (req, res, next) => {
+  try {
+    const OTP = Math.floor(100000 + Math.random() * 900000);
+    const phoneNumber = req.body.phoneNumber;
+    if (!phoneNumber) {
+      return res.status(400).json({
+        status: res.statusCode,
+        message: "Phone number is required",
+        data: "",
+      });
+    }
+    const phoneNumberArray = phoneNumber
+      .split(",")
+      .map((number) => number.trim().replace(/^0/, "+84"));
+    //send OTP to phone
+    await sendSMS({ OTP: OTP, phoneNumbers: phoneNumberArray });
+    //update code in database
+    await patientService.updateCode({ code: OTP, phoneNumber: phoneNumber });
+    res.status(200).json({
+      status: res.statusCode,
+      message: "success",
+      data: "",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: "server error",
+      error: err.stack,
+      data: "",
+    });
+  }
+});
+const checkOTPByPhone = asyncHandler(async (req, res, next) => {
+  try {
+    const phoneNumber = req.body.phoneNumber;
+    const code = req.body.code;
+    if (!phoneNumber || !code) {
+      return res.status(400).json({
+        status: res.statusCode,
+        message: "Missing required fields",
+        data: "",
+      });
+    }
+    const patient = await patientService.checkCode({
+      phoneNumber: phoneNumber,
+      code: code,
+    });
+    if (!patient) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: "Patient not found",
+        data: "",
+      });
+    }
+    res.status(200).json({
+      status: res.statusCode,
+      message: "success",
+      data: patient,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: "server error",
+      error: err.stack,
+      data: "",
+    });
+  }
+});
+
 export default {
   login,
   isLoggedIn,
@@ -331,4 +434,7 @@ export default {
   resetPassword,
   checkOTPByEmail,
   resetPasswordById,
+  checkPhoneNumber,
+  sendOTPToPhone,
+  checkOTPByPhone,
 };

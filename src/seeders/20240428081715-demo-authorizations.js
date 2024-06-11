@@ -27,8 +27,6 @@ const loadedElements = [
   "CDrug",
   "UDrug",
   "DDrug",
-  "RAuthorization",
-  "UAuthorization",
   "RReport",
 ];
 

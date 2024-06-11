@@ -2,14 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("patients", {
+    await queryInterface.createTable("bookingAppointmentLists", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      bookingDate: {
+        type: Sequelize.DATE,
+      },
       fullName: {
+        type: Sequelize.STRING,
+      },
+      phone: {
         type: Sequelize.STRING,
       },
       gender: {
@@ -21,12 +27,11 @@ module.exports = {
       address: {
         type: Sequelize.STRING,
       },
-      phoneNumber: {
-        type: Sequelize.STRING,
+      bookingAppointment: {
+        type: Sequelize.DATE,
       },
-      isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
+      status: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +44,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("patients");
+    await queryInterface.dropTable("bookingAppointmentLists");
   },
 };
