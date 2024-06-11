@@ -2,6 +2,10 @@
 const model = require("../models/index");
 
 class drugService {
+  static async getAllDrug() {
+    const allDrug = await model.drugs.findAll();
+    return allDrug;
+  }
   static async reduceDrug({ drugId, count }) {
     const drug = await model.drugs.findOne({ where: { id: drugId } });
     if (!drug) {

@@ -26,59 +26,41 @@ auth.use(
       console.log(profile.emails[0].value);
       try {
         const user = await db.users.findOne({
-          where: { email: profile.emails[0].value },
+          where: { email: profile.emails[0].value, isActive: 1 },
         });
         if (user) {
           const role = await db.userGroup.findOne({
-            where: { id: user.dataValues.userGroupId },
-          });
-          const authorizationData = await db.authorizations.findAll({
-            where: { userGroupId: user.dataValues.userGroupId, isAccess: 1 },
-            attributes: {
-              include: [
-                [
-                  sequelize.literal(`(
-                              SELECT loadedElement
-                              FROM feats AS feat
-                              WHERE
-                                feat.id = authorizations.featId
-                            )`),
-                  "loadedElement",
-                ],
-              ],
-            },
-          });
-          const permission = authorizationData.map((auth) => {
-            return auth.dataValues.loadedElement;
+            where: { id: user.dataValues.userGroupId, isActive: 1},
           });
 
-          const nonNullPermission = permission.filter((auth) => auth !== null);
-
-          const userData = {
-            username: user.dataValues.userName,
-            email: user.dataValues.email,
-            fullName: user.dataValues.fullName,
-            id: user.dataValues.id,
-            role: role.dataValues.groupName,
-            roleId: user.dataValues.userGroupId,
-            permission: nonNullPermission,
-          };
-          const accessToken = generateAccessToken(userData);
-          const refreshToken = jwt.sign(
-            userData,
-            process.env.REFRESH_KEY_SECRET,
-            { expiresIn: "7d" }
-          );
-          await db.users.update(
-            { refreshToken: refreshToken },
-            { where: { id: user.dataValues.id } }
-          );
-          const userResponse = {
-            user: userData,
-            refreshToken: refreshToken,
-            accessToken: accessToken,
-          };
-          cb(null, userResponse);
+          if(!role){
+           return cb(null, false);
+          } else {
+            const userData = {
+              username: user.dataValues.userName,
+              email: user.dataValues.email,
+              fullName: user.dataValues.fullName,
+              id: user.dataValues.id,
+              role: role.dataValues.groupName,
+              roleId: user.dataValues.userGroupId,
+            };
+            const accessToken = generateAccessToken(userData);
+            const refreshToken = jwt.sign(
+              userData,
+              process.env.REFRESH_KEY_SECRET,
+              { expiresIn: "7d" }
+            );
+            await db.users.update(
+              { refreshToken: refreshToken },
+              { where: { id: user.dataValues.id } }
+            );
+            const userResponse = {
+              user: userData,
+              refreshToken: refreshToken,
+              accessToken: accessToken,
+            };
+            cb(null, userResponse);
+          }
         } else {
           cb(null, false);
         }
@@ -94,61 +76,46 @@ auth.use(
   new LocalStatregy(
     asyncHandler(async (username, password, done) => {
       try {
-        const user = await db.users.findOne({ where: { userName: username } });
-        console.log(user);
+        const user = await db.users.findOne({
+          where: { userName: username, isActive: 1 },
+        });
 
         const role = await db.userGroup.findOne({
-          where: { id: user.dataValues.userGroupId },
+          where: { id: user.dataValues.userGroupId, isActive: 1 },
         });
-        const authorizationData = await db.authorizations.findAll({
-          where: { userGroupId: user.dataValues.userGroupId, isAccess: 1 },
-          attributes: {
-            include: [
-              [
-                sequelize.literal(`(
-                            SELECT loadedElement
-                            FROM feats AS feat
-                            WHERE
-                              feat.id = authorizations.featId
-                          )`),
-                "loadedElement",
-              ],
-            ],
-          },
-        });
-        const permission = authorizationData.map((auth) => {
-          return auth.dataValues.loadedElement;
-        });
-
-        const nonNullPermission = permission.filter((auth) => auth !== null);
+        
 
         if (
           user &&
           (await bcrypt.compare(password, user.dataValues.password))
         ) {
-          const userData = {
-            username: user.dataValues.userName,
-            email: user.dataValues.email,
-            id: user.dataValues.id,
-            role: role.dataValues.groupName,
-            roleId: user.dataValues.userGroupId,
-            permission: nonNullPermission,
-          };
-          const refreshToken = jwt.sign(
-            userData,
-            process.env.REFRESH_KEY_SECRET,
-            { expiresIn: "7d" }
-          );
-          await db.users.update(
-            { refreshToken: refreshToken },
-            { where: { id: user.dataValues.id } }
-          );
-          const userResponse = {
-            user: userData,
-            refreshToken: refreshToken,
-            accessToken: generateAccessToken(userData),
-          };
-          done(null, userResponse);
+          if(!role) {
+            return done(null, false);
+          } else {
+            const userData = {
+              username: user.dataValues.userName,
+              fullName: user.dataValues.fullName,
+              email: user.dataValues.email,
+              id: user.dataValues.id,
+              role: role.dataValues.groupName,
+              roleId: user.dataValues.userGroupId,
+            };
+            const refreshToken = jwt.sign(
+              userData,
+              process.env.REFRESH_KEY_SECRET,
+              { expiresIn: "7d" }
+            );
+            await db.users.update(
+              { refreshToken: refreshToken },
+              { where: { id: user.dataValues.id } }
+            );
+            const userResponse = {
+              user: userData,
+              refreshToken: refreshToken,
+              accessToken: generateAccessToken(userData),
+            };
+            done(null, userResponse);
+          }
         } else {
           return done(null, false);
         }

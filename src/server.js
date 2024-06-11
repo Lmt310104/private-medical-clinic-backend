@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 8888;
 const session = require("express-session");
 const secretSessionKey = process.env.SECRET_SESSION_KEY;
+const job = require("../src/utils/saveData");
 
 //connect to database
 connection();
@@ -52,7 +53,10 @@ app.use("/api/v1/units", require("./routes/unitRouter"));
 app.use("/api/v1/diseases", require("./routes/diseaseRouter"));
 app.use("/api/v1/usage", require("./routes/usageRouter"));
 app.use("/api/v1/users", require("./routes/userRouter"));
-app.use("/api/v1/bookingappointmentlist", require("./routes/bookingAppointmentListRouter"));
+app.use(
+  "/api/v1/bookingappointmentlist",
+  require("./routes/bookingAppointmentListRouter")
+);
 app.use("/api/v1/patients", require("./routes/patientRouter"));
 app.use(
   "/api/v1/appointmentrecords",
@@ -71,6 +75,10 @@ app.use("/api/v1/bills", require("./routes/billRouter"));
 app.use("/api/v1/patients", require("./routes/patientRouter"));
 app.use("/api/v1/features", require("./routes/featureRouter"));
 app.use("/api/v1/drugusagereports", require("./routes/drugUsageReport.router"));
+
+// Start the cron job
+job.start();
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
