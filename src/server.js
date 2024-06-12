@@ -2,6 +2,32 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connection } from "./config/connectDB";
+
+
+const cron = require('node-cron')
+const moment = require('moment')
+const fs = require('fs')
+const spawn = require('child_process').spawn
+
+//Thay 0 0 * * * thành */1 * * * * để test nó sẽ cập nhật trong một phút
+cron.schedule('0 0 * * *', () => {
+    const fileName = `${process.env.DB_NAME}_${moment().format('YYYY_MM_DD')}.sql`
+    const wstream = fs.createWriteStream(`${fileName}`)
+    console.log('---------------------')
+    console.log('Running Database Backup Cron Job')
+    var mysqldump = spawn('C:/xampp/mysql/bin/mysqldump', [`-u${process.env.DB_USERNAME}`, `-p${process.env.DB_PASSWORD}`, process.env.DB_NAME ])
+  
+    mysqldump
+      .stdout
+      .pipe(wstream)
+      .on('finish', () => {
+        console.log('DB Backup Completed!')
+      })
+      .on('error', (err) => {
+        console.log(err)
+      })
+  })
+
 const auth = require("./middleware/passport");
 const app = express();
 const PORT = process.env.PORT || 8888;
