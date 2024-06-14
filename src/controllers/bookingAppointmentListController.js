@@ -104,30 +104,18 @@ const getBookingAppointmentListByDate = asyncHandler(async (req, res, next) => {
 });
 
 const createBookingAppointment = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
   try {
-    if (req.isAuthenticated()) {
-      const existingBookingAppointment =
-        await db.bookingAppointmentList.findOne({
-          where: {
-            phone: req.body.phone,
-          },
-        });
-      if (!existingBookingAppointment) {
-        const bookingAppointment = await db.bookingAppointmentList.create({
-          bookingDate: req.body.bookingDate,
-          fullName: req.body.fullName,
-          phone: req.body.phone,
-          gender: req.body.gender,
-          address: req.body.address,
-          bookingAppointment: req.body.bookingAppointment,
-        });
-        return res.status(200).json({ bookingAppointment: bookingAppointment });
-      } else {
-        return res.status(400).json({ message: "Phone number already exists" });
-      }
-    } else {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    const bookingAppointment = await db.bookingAppointmentList.create({
+      bookingDate: req.body.bookingDate,
+      fullName: req.body.fullName,
+      phone: req.body.phone,
+      gender: req.body.gender,
+      address: req.body.address,
+      bookingAppointment: req.body.bookingAppointment,
+      birthYear: req.body.birthYear,
+    });
+    return res.status(200).json({ bookingAppointment: bookingAppointment });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
