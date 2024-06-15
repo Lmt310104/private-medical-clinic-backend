@@ -8,10 +8,7 @@ router
     authenticateAccessToken,
     bookingAppointmentList.getAllBookingAppointmentList
   )
-  .post(
-    authenticateAccessToken,
-    bookingAppointmentList.createBookingAppointment
-  );
+  .post(bookingAppointmentList.createBookingAppointment);
 router
   .route("/bookingAppointmentListByDate")
   .get(
