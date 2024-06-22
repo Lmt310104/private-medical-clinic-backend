@@ -355,7 +355,7 @@ const checkPhoneNumber = asyncHandler(async (req, res, next) => {
 const sendOTPToPhone = asyncHandler(async (req, res, next) => {
   try {
     const OTP = Math.floor(100000 + Math.random() * 900000);
-  console.log("this is phone number", req.body.phoneNumber,OTP );
+    console.log("this is phone number", req.body.phoneNumber, OTP);
 
     const phoneNumber = req.body.phoneNumber;
     if (!phoneNumber) {

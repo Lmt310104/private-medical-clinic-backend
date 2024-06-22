@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": 12345,
+    "password": "123456",
     "database": "private-medical-clinic",
     "host": "localhost",
     "dialect": "mysql"

@@ -72,7 +72,7 @@ const getAllPatients = asyncHandler(async (req, res, next) => {
     res.status(500).json({
       status: res.statusCode,
       message: "server error",
-      data: "",
+      data: err.stack,
     });
   }
 });

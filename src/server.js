@@ -2,34 +2,41 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connection } from "./config/connectDB";
-
-const cron = require('node-cron')
-const moment = require('moment')
-const fs = require('fs')
-const spawn = require('child_process').spawn
+const swaggerUi = require("swagger-ui-express");
+const fs = require("fs");
+const YAML = require("yaml");
+const file = fs.readFileSync("./src/docs/swagger.yaml", "utf8");
+const swaggerDocument = YAML.parse(file);
+// const cron = require("node-cron");
+// const moment = require("moment");
+// const fs = require("fs");
+// const spawn = require("child_process").spawn;
 
 //Thay 0 0 * * * thành */1 * * * * để test nó sẽ cập nhật trong một phút
-cron.schedule('0 0 * * *', () => {
-    const fileName = `${process.env.DB_NAME}_${moment().format('YYYY_MM_DD')}.sql`
-    const wstream = fs.createWriteStream(`${fileName}`)
-    console.log('---------------------')
-    console.log('Running Database Backup Cron Job')
-    var mysqldump = spawn('C:/xampp/mysql/bin/mysqldump', [`-u${process.env.DB_USERNAME}`, `-p${process.env.DB_PASSWORD}`, process.env.DB_NAME ])
+// cron.schedule("0 0 * * *", () => {
+//   const fileName = `${process.env.DB_NAME}_${moment().format(
+//     "YYYY_MM_DD"
+//   )}.sql`;
+//   const wstream = fs.createWriteStream(`${fileName}`);
+//   console.log("---------------------");
+//   console.log("Running Database Backup Cron Job");
+//   var mysqldump = spawn("C:/xampp/mysql/bin/mysqldump", [
+//     `-u${process.env.DB_USERNAME}`,
+//     `-p${process.env.DB_PASSWORD}`,
+//     process.env.DB_NAME,
+//   ]);
 
-    mysqldump
-      .stdout
-      .pipe(wstream)
-      .on('finish', () => {
-        console.log('DB Backup Completed!')
-      })
-      .on('error', (err) => {
-        console.log(err)
-      })
-  })
-
-
-const auth = require("./middleware/passport");
+//   mysqldump.stdout
+//     .pipe(wstream)
+//     .on("finish", () => {
+//       console.log("DB Backup Completed!");
+//     })
+//     .on("error", (err) => {
+//       console.log(err);
+//     });
+// });
 const app = express();
+const auth = require("./middleware/passport");
 const PORT = process.env.PORT || 8888;
 const session = require("express-session");
 const secretSessionKey = process.env.SECRET_SESSION_KEY;
@@ -61,15 +68,15 @@ app.use(
 app.use(cookieParser());
 app.use(auth.initialize());
 app.use(auth.session());
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Credentials", "true"); // Thiết lập Access-Control-Allow-Credentials thành true
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", "true"); // Thiết lập Access-Control-Allow-Credentials thành true
+  next();
+});
 
 app.use(express.urlencoded({ extended: true }));
 
 //routes
-
+app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/v1/auth", require("./routes/authRouter"));
 app.use("/api/v1/authorizations", require("./routes/authorizationRouter"));
 app.use("/api/v1/usergroups", require("./routes/groupUserRouter"));

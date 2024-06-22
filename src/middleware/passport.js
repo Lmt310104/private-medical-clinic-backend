@@ -30,11 +30,11 @@ auth.use(
         });
         if (user) {
           const role = await db.userGroup.findOne({
-            where: { id: user.dataValues.userGroupId, isActive: 1},
+            where: { id: user.dataValues.userGroupId, isActive: 1 },
           });
 
-          if(!role){
-           return cb(null, false);
+          if (!role) {
+            return cb(null, false);
           } else {
             const userData = {
               username: user.dataValues.userName,
@@ -79,17 +79,15 @@ auth.use(
         const user = await db.users.findOne({
           where: { userName: username, isActive: 1 },
         });
-
         const role = await db.userGroup.findOne({
           where: { id: user.dataValues.userGroupId, isActive: 1 },
         });
-        
-
         if (
           user &&
           (await bcrypt.compare(password, user.dataValues.password))
         ) {
-          if(!role) {
+          console.log("done");
+          if (!role) {
             return done(null, false);
           } else {
             const userData = {
